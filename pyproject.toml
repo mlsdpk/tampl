@@ -1,0 +1,15 @@
+[build-system]
+requires = ["scikit-build-core>=0.3.3", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "pytampl"
+version = "0.1.0"
+description="Python Bindings for Task and Motion Planning Library (TAMPL)"
+requires-python = ">=3.8"
+
+[tool.scikit-build]
+wheel.expand-macos-universal-tags = true
+
+[tool.setuptools.packages.find]
+where = ["bindings/src"]
