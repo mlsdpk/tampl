@@ -4,7 +4,7 @@ set(HEADER_FILES
     ${HEADER_PATH}/tampl.hpp ${HEADER_PATH}/interface/action.hpp
     ${HEADER_PATH}/interface/environment.hpp ${HEADER_PATH}/interface/state.hpp)
 
-set(SRC_FILES tampl.cpp)
+set(SRC_FILES tampl.cpp planner/fast_forward/fast_forward.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SRC_FILES})
 target_include_directories(
@@ -17,6 +17,8 @@ target_include_directories(
 set_target_properties(
   ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${TAMPL_VERSION}"
                              POSITION_INDEPENDENT_CODE ON)
+
+add_subdirectory(planner)
 
 install(
   TARGETS ${PROJECT_NAME}
