@@ -10,6 +10,8 @@ requires-python = ">=3.8"
 
 [tool.scikit-build]
 wheel.expand-macos-universal-tags = true
+wheel.packages = ["bindings/pytampl"]
+wheel.exclude = ["**.cpp", "**.hpp", "**.txt"]
 
 [tool.setuptools.packages.find]
-where = ["bindings/src"]
+where = ["bindings"]
