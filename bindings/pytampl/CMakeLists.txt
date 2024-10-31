@@ -1,2 +1,4 @@
+add_subdirectory(core)
 add_subdirectory(environment)
 add_subdirectory(planner)
+add_subdirectory(pddl)

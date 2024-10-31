@@ -1,7 +1,10 @@
 #pragma once
 
+#include "tampl/core/action.hpp"
+#include "tampl/core/planner.hpp"
 #include "tampl/interface/action.hpp"
 #include "tampl/interface/environment.hpp"
-#include "tampl/interface/planner.hpp"
 #include "tampl/interface/state.hpp"
+#include "tampl/pddl/domain.hpp"
+#include "tampl/pddl/problem.hpp"
 #include "tampl/planner/fast_forward/fast_forward.hpp"

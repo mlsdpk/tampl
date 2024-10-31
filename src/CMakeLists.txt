@@ -4,7 +4,8 @@ set(HEADER_FILES
     ${HEADER_PATH}/tampl.hpp ${HEADER_PATH}/interface/action.hpp
     ${HEADER_PATH}/interface/environment.hpp ${HEADER_PATH}/interface/state.hpp)
 
-set(SRC_FILES tampl.cpp planner/fast_forward/fast_forward.cpp)
+# TODO: glob it
+set(SRC_FILES tampl.cpp core/planner.cpp planner/fast_forward/fast_forward.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SRC_FILES})
 target_include_directories(
