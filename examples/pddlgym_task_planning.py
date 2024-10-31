@@ -18,5 +18,8 @@ if planner.solve(env):
     plan: List[Action] = planner.get_solution()
     for i, action in enumerate(plan):
         print(f"{i}: {action.type} ({' '.join(action.parameters)})")
+
+    # render the solution
+    env.render(plan)
 else:
     print("Solution not found!")
