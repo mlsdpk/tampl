@@ -2,6 +2,13 @@
 
 ## Build instructions for development (temporary)
 
+### setup
+```
+$ python -m venv tampl_venv
+$ source tampl_venv/bin/activate
+$ pip install -r requirements.txt
+```
+
 ### build and install tampl
 ```
 $ mkdir build && cd build
@@ -21,3 +28,4 @@ $ cd extensions && pip install .
 
 ## Issues
 - [ ] Example python script cannot find dylib at runtime. Manually setting is still required at the moment as: `export DYLD_LIBRARY_PATH=<path-to-dylib>:$DYLD_LIBRARY_PATH`
+- [ ] Fix FF planner build failure on Unix
