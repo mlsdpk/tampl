@@ -1,11 +1,10 @@
 set(HEADER_PATH ${PROJECT_SOURCE_DIR}/include/${PROJECT_NAME})
 
-set(HEADER_FILES
-    ${HEADER_PATH}/tampl.hpp ${HEADER_PATH}/interface/action.hpp
-    ${HEADER_PATH}/interface/environment.hpp ${HEADER_PATH}/interface/state.hpp)
+set(HEADER_FILES ${HEADER_PATH}/tampl.hpp)
 
 # TODO: glob it
-set(SRC_FILES tampl.cpp core/planner.cpp planner/fast_forward/fast_forward.cpp)
+set(SRC_FILES tampl.cpp core/planner.cpp environment/pddl_env.cpp
+              planner/fast_forward/fast_forward.cpp)
 
 add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SRC_FILES})
 target_include_directories(

@@ -1,9 +1,11 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "tampl/core/action.hpp"
+#include "tampl/core/environment.hpp"
 #include "tampl/pddl/domain.hpp"
 #include "tampl/pddl/problem.hpp"
 
@@ -17,9 +19,7 @@ public:
   }
   virtual ~Planner() = default;
 
-  virtual bool solve(const pddl::Domain &domain,
-                     const pddl::Problem &problem) = 0;
-
+  virtual bool solve(const std::shared_ptr<Environment> &env) = 0;
   const std::vector<tampl::core::Action> &get_solution() const;
 
 protected:

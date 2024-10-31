@@ -14,7 +14,7 @@ env = PDDLGymEnv("PDDLEnvHanoi-v0")
 planner = FastForward()
 
 # solve the task planning problem
-if planner.solve(Domain(env.domain), Problem(env.problem)):
+if planner.solve(env):
     plan: List[Action] = planner.get_solution()
     for i, action in enumerate(plan):
         print(f"{i}: {action.type} ({' '.join(action.parameters)})")

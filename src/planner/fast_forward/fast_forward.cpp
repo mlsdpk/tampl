@@ -26,13 +26,22 @@ FastForward::FastForward() {
   }
 }
 
-bool FastForward::solve(const pddl::Domain &domain,
-                        const pddl::Problem &problem) {
+bool FastForward::solve(const std::shared_ptr<core::Environment> &env) {
+  // cast env into pddl-specific environment (ff requires this)
+  auto pddl_env = std::dynamic_pointer_cast<environment::PDDLEnvironment>(env);
+  if (!pddl_env) {
+    std::cerr
+        << "Failed to cast the input env to environment::PDDLEnvironment. Make "
+           "sure you are passing an instance of environment::PDDLEnvironment "
+           "type\n";
+    return false; // Handle the failure case appropriately
+  }
 
   std::ostringstream cmd_stream;
   cmd_stream << "gtimeout"
              << " " << 10 << " " << FF_PLANNER_EXECUTABLE_INSTALL << " -o "
-             << domain.get_file_path() << " -f " << problem.get_file_path();
+             << pddl_env->pddl_domain().get_file_path() << " -f "
+             << pddl_env->pddl_problem().get_file_path();
   const std::string cmd_str = cmd_stream.str();
 
   // open a pipe to execute the command and read the output

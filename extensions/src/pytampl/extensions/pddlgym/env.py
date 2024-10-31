@@ -1,15 +1,16 @@
 import pytampl
 import pddlgym
 
-class PDDLGymEnv(pytampl.environment.Environment):
-    def __init__(self, env_name: str):
-        pytampl.environment.Environment.__init__(self, env_name)
 
+class PDDLGymEnv(pytampl.environment.PDDLEnvironment):
+    def __init__(self, env_name: str):
         # create ppdlgym env
-        self.env = pddlgym.make(env_name)
+        env = pddlgym.make(env_name)
 
         # info includes problem and domain files
         # Note: there can be many problem files and reset randomly selects one
-        self.state, info = self.env.reset()
-        self.problem = info['problem_file']
-        self.domain = info['domain_file']
+        state, info = env.reset()
+
+        pytampl.environment.PDDLEnvironment.__init__(
+            self, env_name, info["domain_file"], info["problem_file"]
+        )

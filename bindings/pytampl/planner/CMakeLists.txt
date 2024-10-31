@@ -1,7 +1,7 @@
 set(SRC_FILES bindings.cpp)
 
 pybind11_add_module(planner ${SRC_FILES})
-target_link_libraries(planner PUBLIC tampl PRIVATE pybind11::module)
+target_link_libraries(planner PRIVATE tampl pybind11::module)
 target_include_directories(
   planner
   PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>

@@ -1,5 +1,6 @@
 #include "tampl/conversions.hpp"
 #include "tampl/core/planner.hpp"
+#include "tampl/environment/pddl_env.hpp"
 
 #include <filesystem>
 #include <iostream>
@@ -11,7 +12,8 @@ namespace tampl::planner {
 class FastForward : public core::Planner {
 public:
   FastForward();
-  bool solve(const pddl::Domain &domain, const pddl::Problem &problem) override;
+  bool solve(const std::shared_ptr<core::Environment> &env) override;
+
 private:
   std::string binary_path_;
   std::string result_;
