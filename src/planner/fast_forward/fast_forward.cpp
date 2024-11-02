@@ -19,7 +19,7 @@ FastForward::FastForward() {
   }
 
   if (!binary_path_.empty()) {
-    printf("FF Planner binary found at %s\n", FF_PLANNER_EXECUTABLE_INSTALL);
+    printf("FF Planner binary found at %s\n", binary_path_.c_str());
   } else {
     throw std::runtime_error("FF binary not found. Please set "
                              "FF_PLANNER_BINARY_PATH environment variable.");
@@ -39,7 +39,7 @@ bool FastForward::solve(const std::shared_ptr<core::Environment> &env) {
 
   std::ostringstream cmd_stream;
   cmd_stream << "gtimeout"
-             << " " << 10 << " " << FF_PLANNER_EXECUTABLE_INSTALL << " -o "
+             << " " << 10 << " " << binary_path_ << " -o "
              << pddl_env->pddl_domain().get_file_path() << " -f "
              << pddl_env->pddl_problem().get_file_path();
   const std::string cmd_str = cmd_stream.str();

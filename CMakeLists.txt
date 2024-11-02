@@ -29,6 +29,7 @@ set(TAMPL_CMAKE_CONFIG_INSTALL_DIR "lib/cmake/${PROJECT_NAME}")
 
 # subdirectories
 add_subdirectory(src)
+add_subdirectory(thirdparty)
 add_subdirectory(bindings)
 
 option(TAMPL_BUILD_EXAMPLES "Build example applications." ON)

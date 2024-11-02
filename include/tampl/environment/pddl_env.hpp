@@ -1,3 +1,5 @@
+#pragma once
+
 #include "tampl/core/environment.hpp"
 #include "tampl/pddl/domain.hpp"
 #include "tampl/pddl/problem.hpp"

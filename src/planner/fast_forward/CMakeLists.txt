@@ -24,9 +24,7 @@ ExternalProject_Add(
   CONFIGURE_COMMAND ""
   BUILD_IN_SOURCE 1
   BUILD_COMMAND make
-  INSTALL_COMMAND
-    ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/ffplanner/src/ffplanner/ff
-    ${FF_PLANNER_EXECUTABLE_INSTALL}
+  INSTALL_COMMAND "" # No installation required at the moment
   LOG_DOWNLOAD ON
   LOG_BUILD ON)
 

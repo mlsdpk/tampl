@@ -11,9 +11,9 @@
 
 namespace tampl::planner {
 
-class FastForward : public core::Planner {
+class FastDownward : public core::Planner {
 public:
-  FastForward();
+  FastDownward();
   bool solve(const std::shared_ptr<core::Environment> &env) override;
 
 private:

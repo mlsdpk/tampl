@@ -1,4 +1,4 @@
-__path__ = __import__('pkgutil').extend_path(__path__, __name__)
-
+from .core import *
+from .pddl import *
 from .environment import *
 from .planner import *

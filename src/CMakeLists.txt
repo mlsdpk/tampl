@@ -1,12 +1,17 @@
+# create tampl as an empty lib for now
+add_library(${PROJECT_NAME} SHARED)
+
+# include all sub directories
+add_subdirectory(core)
+add_subdirectory(environment)
+add_subdirectory(planner)
+
 set(HEADER_PATH ${PROJECT_SOURCE_DIR}/include/${PROJECT_NAME})
-
 set(HEADER_FILES ${HEADER_PATH}/tampl.hpp)
+set(SRC_FILES tampl.cpp ${_core_src_files} ${_environment_src_files}
+              ${_planner_src_files})
 
-# TODO: glob it
-set(SRC_FILES tampl.cpp core/planner.cpp environment/pddl_env.cpp
-              planner/fast_forward/fast_forward.cpp)
-
-add_library(${PROJECT_NAME} SHARED ${HEADER_FILES} ${SRC_FILES})
+target_sources(${PROJECT_NAME} PRIVATE ${SRC_FILES} ${HEADER_FILES})
 target_include_directories(
   ${PROJECT_NAME}
   PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>
@@ -17,8 +22,6 @@ target_include_directories(
 set_target_properties(
   ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${TAMPL_VERSION}"
                              POSITION_INDEPENDENT_CODE ON)
-
-add_subdirectory(planner)
 
 install(
   TARGETS ${PROJECT_NAME}
