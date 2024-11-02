@@ -4,6 +4,7 @@
 
 ### setup
 ```
+$ git clone --recursive https://github.com/mlsdpk/tampl.git
 $ python -m venv tampl_venv
 $ source tampl_venv/bin/activate
 $ pip install -r requirements.txt
