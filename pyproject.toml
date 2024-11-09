@@ -13,6 +13,9 @@ wheel.expand-macos-universal-tags = true
 wheel.packages = ["bindings/pytampl"]
 build-dir = "build"
 wheel.exclude = ["**.cpp", "**.hpp", "**.txt"]
+logging.level = "INFO"
+build.verbose = true
+cmake.args = ["-DOMPL_BUILD_TESTS=OFF"]
 
 [tool.setuptools.packages.find]
 where = ["bindings"]

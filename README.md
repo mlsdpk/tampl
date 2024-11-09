@@ -10,16 +10,9 @@ $ source tampl_venv/bin/activate
 $ pip install -r requirements.txt
 ```
 
-### build and install tampl
-```
-$ mkdir build && cd build
-$ cmake -DCMAKE_INSTALL_PREFIX=<path-to-install> ..
-$ make
-```
-
 ### build and install pytampl
 ```
-$ pip install .
+$ pip install . --config-settings=build.tool-args=-j8
 ```
 
 ### build and install pytampl-extensions
@@ -46,8 +39,12 @@ $ python examples/pddlgym_task_planning.py
   <img src="docs/img/PDDLEnvBlocks-v0.output.gif" width="200" alt="">
 </p>
 
+### Motion Planning in PyBullet
+
+TAMPL’s Python bindings provide an out-of-the-box experience for motion planning in PyBullet-based environments. The underlying motion planners are integrated with OMPL, allowing you to leverage all of OMPL's powerful C++ features while executing high-level behaviors in Python through PyBullet.
 
 
 ## Issues
 - [ ] Example python script cannot find dylib at runtime. Manually setting is still required at the moment as: `export DYLD_LIBRARY_PATH=<path-to-dylib>:$DYLD_LIBRARY_PATH`
 - [ ] Fix FF planner build failure on Unix
+- [ ] yaml-cpp not found on mac and requires setting this before compiling at the moment as: `export LIBRARY_PATH=$(brew --prefix yaml-cpp)/lib:$LIBRARY_PATH`

@@ -1,5 +1,6 @@
 #include "pytampl/typedefs.hpp"
 #include "tampl/core/environment.hpp"
+#include "tampl/environment/ompl_env.hpp"
 #include "tampl/environment/pddl_env.hpp"
 
 namespace tampl::pytampl {
@@ -24,6 +25,14 @@ PYBIND11_MODULE(environment, m) {
                     (pddl::Problem & (pddl_env_t::*)()) &
                         pddl_env_t::pddl_problem, // Getter
                     nullptr);                     // No setter
+
+  //////////////////////////////////////////////////////////
+
+  // ompl specific enviornment class
+  using ompl_env_t = tampl::environment::OMPLEnvironment;
+  py::class_<ompl_env_t, base_env_t, std::shared_ptr<ompl_env_t>>(
+      m, "OMPLEnvironment")
+      .def(py::init<const std::string &>());
 }
 
 } // namespace tampl::pytampl
