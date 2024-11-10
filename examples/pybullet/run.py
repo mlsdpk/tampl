@@ -5,7 +5,7 @@ Example script to show case motion planning in pybullet environments through TAM
 from typing import List
 
 from pytampl.core import Action
-from pytampl.extensions.pybullet import PyBulletEnv
+from pytampl.extensions.pybullet.env import PyBulletEnv
 from pytampl.planner.ompl import OMPL
 
 
@@ -18,3 +18,4 @@ planner = OMPL("RRTConnect")
 # solve the motion planning problem
 if planner.solve(env):
     plan: List[Action] = planner.get_solution()
+    env.render()

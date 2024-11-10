@@ -1,2 +1,3 @@
-pddlgym
+pddlgym # move this to extensions
+pybullet
 pybind11-global
