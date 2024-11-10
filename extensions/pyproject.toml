@@ -2,9 +2,15 @@
 requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+include-package-data = true
+
 [tool.setuptools.packages.find]
 where = ["src/"]
-include = ["pytampl.extensions.pddlgym"]
+include = ["pytampl.extensions.pddlgym", "pytampl.extensions.pybullet**"]
+
+[tool.setuptools.package-data]
+"pytampl.extensions.pybullet" = ["**/*.urdf", "**/*.stl", "**/*.dae"]
 
 [tool.scikit-build]
 wheel.expand-macos-universal-tags = true
@@ -12,5 +18,5 @@ wheel.expand-macos-universal-tags = true
 [project]
 name = "pytampl-extensions"
 version = "0.1.0"
-description="TAMPL Extensions"
+description = "TAMPL Extensions"
 requires-python = ">=3.8"

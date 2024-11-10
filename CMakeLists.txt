@@ -28,17 +28,12 @@ set(TAMPL_FRAMEWORK_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}")
 set(TAMPL_CMAKE_CONFIG_INSTALL_DIR "lib/cmake/${PROJECT_NAME}")
 
 # subdirectories
-add_subdirectory(src)
 add_subdirectory(thirdparty)
+add_subdirectory(src)
 add_subdirectory(bindings)
 
 option(TAMPL_BUILD_EXAMPLES "Build example applications." ON)
 if(TAMPL_BUILD_EXAMPLES)
-    message(STATUS "Building example applications.")
-    add_subdirectory(examples)
+  message(STATUS "Building example applications.")
+  add_subdirectory(examples)
 endif()
-
-install(
-  EXPORT tamplTargets
-  DESTINATION ${TAMPL_CMAKE_CONFIG_INSTALL_DIR}
-  FILE tampl-config.cmake)
