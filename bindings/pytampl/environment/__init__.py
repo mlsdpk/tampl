@@ -1,1 +1,1 @@
-from .environment import Environment, PDDLEnvironment, OMPLEnvironment
+from .environment import Environment, PDDLEnvironment

@@ -19,7 +19,8 @@ public:
   }
   virtual ~Planner() = default;
 
-  virtual bool solve(const std::shared_ptr<Environment> &env) = 0;
+  // TODO(Phone): remove this later
+  virtual bool solve(const std::shared_ptr<Environment> &env) { return false; };
   const std::vector<tampl::core::Action> &get_solution() const;
 
 protected:

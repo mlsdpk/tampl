@@ -8,6 +8,20 @@ version = "0.1.0"
 description="Python Bindings for Task and Motion Planning Library (TAMPL)"
 requires-python = ">=3.8"
 
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
+xfail_strict = true
+log_cli_level = "INFO"
+filterwarnings = [
+  "error",
+  "ignore::pytest.PytestCacheWarning",
+]
+testpaths = ["tests"]
+
 [tool.scikit-build]
 wheel.expand-macos-universal-tags = true
 wheel.packages = ["bindings/pytampl"]

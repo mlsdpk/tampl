@@ -3,11 +3,12 @@ find_package(Eigen3 REQUIRED)
 add_library(${PROJECT_NAME} SHARED)
 
 # include all sub directories
+add_subdirectory(agent)
 add_subdirectory(core)
 add_subdirectory(environment)
 add_subdirectory(planner)
 
-set(SRC_FILES tampl.cpp ${_core_src_files} ${_environment_src_files}
+set(SRC_FILES tampl.cpp ${_agent_src_files} ${_core_src_files} ${_environment_src_files}
               ${_planner_src_files})
 
 target_sources(${PROJECT_NAME} PRIVATE ${SRC_FILES})
