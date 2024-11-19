@@ -63,7 +63,7 @@ TAMPL’s Python bindings provide an out-of-the-box experience for motion planni
 | Boston Dynamics | Spot  | <img src="docs/img/pybullet/spot.jpg" width="200" /> | Coming soon... |
 
 ## Issues
-- [ ] Example python script cannot find dylib at runtime. Manually setting is still required at the moment as: `export DYLD_LIBRARY_PATH=<path-to-dylib>:$DYLD_LIBRARY_PATH`
+- [x] Example python script cannot find dylib at runtime. Manually setting is still required at the moment as: `export DYLD_LIBRARY_PATH=<path-to-dylib>:$DYLD_LIBRARY_PATH`
 - [ ] Fix FF planner build failure on Unix
 - [ ] yaml-cpp not found on mac and requires setting this before compiling at the moment as: `export LIBRARY_PATH=$(brew --prefix yaml-cpp)/lib:$LIBRARY_PATH`
 - [ ] pybullet rendering not using material properties from .dae files yet (consider using .obj, .mtl files with pybullet.URDF_USE_MATERIAL_COLORS_FROM_MTL flag upon loadURDF call)

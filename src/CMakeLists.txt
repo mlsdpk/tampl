@@ -1,3 +1,33 @@
+set(TAMPL_TARGET_NAME "tampl")
+
+include(GNUInstallDirs)
+set(TAMPL_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/cmake/tampl")
+set(TAMPL_INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/tampl")
+set(TAMPL_TARGETS_EXPORT_NAME "tampl-targets")
+set(TAMPL_CMAKE_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+set(TAMPL_CMAKE_VERSION_CONFIG_FILE
+    "${TAMPL_CMAKE_CONFIG_DIR}/tampl-config-version.cmake")
+set(TAMPL_CMAKE_PROJECT_CONFIG_FILE
+    "${TAMPL_CMAKE_CONFIG_DIR}/tampl-config.cmake")
+
+# RPATH stuff see https://cmake.org/Wiki/CMake_RPATH_handling
+if(APPLE)
+  set(CMAKE_MACOSX_RPATH ON)
+  set(_rpath_portable_origin "@loader_path")
+else()
+  set(_rpath_portable_origin $ORIGIN)
+endif()
+
+# Use separate rpaths during build and install phases
+set(CMAKE_SKIP_BUILD_RPATH TRUE)
+# Don't use the install-rpath during the build phase
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_RPATH "${_rpath_portable_origin}")
+
+# add the automatically determined parts of the RPATH which point to directories
+# outside the build tree to the install RPATH
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
 find_package(Eigen3 REQUIRED)
 # create tampl as an empty lib for now
 add_library(${PROJECT_NAME} SHARED)
@@ -8,8 +38,8 @@ add_subdirectory(core)
 add_subdirectory(environment)
 add_subdirectory(planner)
 
-set(SRC_FILES tampl.cpp ${_agent_src_files} ${_core_src_files} ${_environment_src_files}
-              ${_planner_src_files})
+set(SRC_FILES tampl.cpp ${_agent_src_files} ${_core_src_files}
+              ${_environment_src_files} ${_planner_src_files})
 
 target_sources(${PROJECT_NAME} PRIVATE ${SRC_FILES})
 target_include_directories(
@@ -27,28 +57,44 @@ target_include_directories(
   PUBLIC $<BUILD_INTERFACE:${OMPL_INCLUDE_DIRS}>
          # for ompl/config.h
          $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/thirdparty/ompl/src>)
-target_link_libraries(${PROJECT_NAME} PRIVATE ompl)
+target_link_libraries(${PROJECT_NAME} PUBLIC ompl)
 
 set_target_properties(
   ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${TAMPL_VERSION}"
                              POSITION_INDEPENDENT_CODE ON)
 
-install(
-  TARGETS ${PROJECT_NAME}
-  # EXPORT ${PROJECT_NAME}Targets
-  RUNTIME DESTINATION ${TAMPL_RUNTIME_INSTALL_DIR}
-  LIBRARY DESTINATION ${TAMPL_LIBRARY_INSTALL_DIR}
-  ARCHIVE DESTINATION ${TAMPL_ARCHIVE_INSTALL_DIR}
-  FRAMEWORK DESTINATION ${TAMPL_FRAMEWORK_INSTALL_DIR}
-  PUBLIC_HEADER DESTINATION ${TAMPL_INCLUDE_INSTALL_DIR}/${PROJECT_NAME})
+# INSTALL
 
 # Write/install version file
 include(CMakePackageConfigHelpers)
 set(VERSION_FILE
     "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}-config-version.cmake")
 write_basic_package_version_file(
-  ${VERSION_FILE}
+  ${TAMPL_CMAKE_VERSION_CONFIG_FILE}
   VERSION ${TAMPL_VERSION}
-  COMPATIBILITY AnyNewerVersion)
+  COMPATIBILITY SameMinorVersion)
 
-install(FILES ${VERSION_FILE} DESTINATION ${TAMPL_CMAKE_CONFIG_INSTALL_DIR})
+install(FILES ${TAMPL_CMAKE_PROJECT_CONFIG_FILE}
+              ${TAMPL_CMAKE_VERSION_CONFIG_FILE}
+        DESTINATION ${TAMPL_CONFIG_INSTALL_DIR})
+
+set_target_properties(
+  ${PROJECT_NAME}
+  PROPERTIES INSTALL_RPATH
+             "${CMAKE_INSTALL_RPATH}:${_rpath_portable_origin}/../lib")
+
+install(
+  TARGETS ${PROJECT_NAME} ompl
+  EXPORT ${TAMPL_TARGETS_EXPORT_NAME}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  INCLUDES
+  PUBLIC_HEADER DESTINATION ${TAMPL_INCLUDE_INSTALL_DIR})
+
+install(
+  EXPORT ${TAMPL_TARGETS_EXPORT_NAME}
+  FILE ${TAMPL_PROJECT_TARGETS_FILE}
+  NAMESPACE TAMPL::
+  DESTINATION ${TAMPL_CONFIG_INSTALL_DIR}
+  COMPONENT ${TAMPL_TARGET_NAME}_Development)
