@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <regex>
 #include <sstream>
 #include <string>
@@ -7,7 +8,16 @@
 
 #include <iostream> // to remove
 
+// ompl related
+#include <ompl/base/SpaceInformation.h>
+#include <ompl/base/spaces/RealVectorStateSpace.h>
+#include <ompl/base/spaces/SE2StateSpace.h>
+#include <ompl/base/spaces/SE3StateSpace.h>
+#include <ompl/geometric/SimpleSetup.h>
+
+// tampl related
 #include "tampl/core/action.hpp"
+#include "tampl/core/state.hpp"
 
 namespace tampl::conversions {
 
@@ -54,6 +64,23 @@ inline void from_ff_result(const std::string &from,
       to.push_back(std::move(_action));
     }
   }
+}
+
+inline ompl::base::ScopedState<>
+to_ompl_state(const std::shared_ptr<core::state::State> &state,
+              const std::shared_ptr<ompl::base::SpaceInformation> &ompl_si,
+              const std::shared_ptr<core::state_space::StateSpace> &tampl_ss) {
+  ompl::base::ScopedState<> ompl_state(ompl_si->getStateSpace());
+
+  auto state_space_type = tampl_ss->type;
+  if (state_space_type == core::state_space::Type::Rn) {
+    auto tampl_state = std::dynamic_pointer_cast<core::state::Real>(state);
+    for (size_t i = 0; i < tampl_state->size(); ++i) {
+      ompl_state[i] = (*tampl_state)[i];
+    }
+  }
+
+  return ompl_state;
 }
 
 } // namespace tampl::conversions

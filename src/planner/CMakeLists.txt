@@ -6,4 +6,4 @@ set(_planner_src_files
 
 add_subdirectory(fast_forward)
 add_subdirectory(fast_downward)
-add_subdirectory(ompl)
+# add_subdirectory(ompl)

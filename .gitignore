@@ -2,3 +2,5 @@
 build/
 __pycache__
 *.egg-info
+doxygen
+tampl_venv
