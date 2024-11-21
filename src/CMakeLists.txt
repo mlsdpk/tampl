@@ -57,7 +57,14 @@ target_include_directories(
   PUBLIC $<BUILD_INTERFACE:${OMPL_INCLUDE_DIRS}>
          # for ompl/config.h
          $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/thirdparty/ompl/src>)
-target_link_libraries(${PROJECT_NAME} PUBLIC ompl)
+
+# BT related
+set(BTV4_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/thirdparty/BehaviorTree.CPP/include")
+target_include_directories(
+  ${PROJECT_NAME}
+  PUBLIC $<BUILD_INTERFACE:${BTV4_INCLUDE_DIRS}>)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC ompl behaviortree_cpp)
 
 set_target_properties(
   ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${TAMPL_VERSION}"

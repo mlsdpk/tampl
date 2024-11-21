@@ -4,3 +4,6 @@
 [submodule "thirdparty/ompl"]
 	path = thirdparty/ompl
 	url = https://github.com/ompl/ompl.git
+[submodule "thirdparty/BehaviorTree.CPP"]
+	path = thirdparty/BehaviorTree.CPP
+	url = https://github.com/BehaviorTree/BehaviorTree.CPP.git
