@@ -14,7 +14,7 @@ namespace tampl::planner {
 class FastForward : public core::Planner {
 public:
   FastForward();
-  bool solve(const std::shared_ptr<core::Environment> &env) override;
+  bool solve(const std::string &domain_file, const std::string &problem_file);
 
 private:
   std::string binary_path_;

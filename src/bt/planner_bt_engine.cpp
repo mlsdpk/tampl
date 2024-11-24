@@ -2,7 +2,9 @@
 
 namespace tampl::bt {
 
-PlannerBTEngine::PlannerBTEngine(const std::string &bt_xml_path) {
+PlannerBTEngine::PlannerBTEngine(const std::string &bt_xml_path,
+                                 const std::string &domain_file,
+                                 const std::string &problem_file) {
   // ref: nav2_util/string_utils.hpp
   auto split = [](const std::string &tokenstring, char delimiter) {
     std::vector<std::string> tokens;
@@ -23,9 +25,11 @@ PlannerBTEngine::PlannerBTEngine(const std::string &bt_xml_path) {
     bt_factory_.registerFromPlugin(BT::SharedLibrary::getOSName(p));
   }
 
-  // IMPORTANT: when the object "tree" goes out of scope, all the
-  // TreeNodes are destroyed
-  tree_ = bt_factory_.createTreeFromFile(bt_xml_path);
+  bb_ = BT::Blackboard::create();
+  bb_->set<std::string>("domain_file", domain_file);
+  bb_->set<std::string>("problem_file", problem_file);
+
+  tree_ = bt_factory_.createTreeFromFile(bt_xml_path, bb_);
 }
 
 PlannerBTEngine::~PlannerBTEngine() {}

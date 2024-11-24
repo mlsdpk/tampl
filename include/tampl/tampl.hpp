@@ -1,5 +1,6 @@
 #pragma once
 
+#include "tampl/bt/planner_bt_engine.hpp"
 #include "tampl/core/action.hpp"
 #include "tampl/core/planner.hpp"
 #include "tampl/pddl/domain.hpp"

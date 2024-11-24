@@ -14,7 +14,6 @@ namespace tampl::planner {
 class FastDownward : public core::Planner {
 public:
   FastDownward();
-  bool solve(const std::shared_ptr<core::Environment> &env) override;
 
 private:
   std::string binary_path_;
