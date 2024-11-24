@@ -26,8 +26,8 @@ FastDownward::FastDownward() {
   }
 }
 
-bool FastDownward::solve(const std::shared_ptr<core::Environment> &env) {
-  return true;
-}
+// bool FastDownward::solve(const std::shared_ptr<core::Environment> &env) {
+//   return true;
+// }
 
 } // namespace tampl::planner

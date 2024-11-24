@@ -4,6 +4,8 @@ include(GNUInstallDirs)
 set(TAMPL_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/cmake/tampl")
 set(TAMPL_INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/tampl")
 set(TAMPL_TARGETS_EXPORT_NAME "tampl-targets")
+set(TAMPL_CMAKE_CONFIG_TEMPLATE
+    "${PROJECT_SOURCE_DIR}/cmake/tampl-config.cmake.in")
 set(TAMPL_CMAKE_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}")
 set(TAMPL_CMAKE_VERSION_CONFIG_FILE
     "${TAMPL_CMAKE_CONFIG_DIR}/tampl-config-version.cmake")
@@ -34,11 +36,12 @@ add_library(${PROJECT_NAME} SHARED)
 
 # include all sub directories
 add_subdirectory(agent)
+add_subdirectory(bt)
 add_subdirectory(core)
 add_subdirectory(environment)
 add_subdirectory(planner)
 
-set(SRC_FILES tampl.cpp ${_agent_src_files} ${_core_src_files}
+set(SRC_FILES tampl.cpp ${_agent_src_files} ${_bt_src_files} ${_core_src_files}
               ${_environment_src_files} ${_planner_src_files})
 
 target_sources(${PROJECT_NAME} PRIVATE ${SRC_FILES})
@@ -59,12 +62,13 @@ target_include_directories(
          $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/thirdparty/ompl/src>)
 
 # BT related
-set(BTV4_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/thirdparty/BehaviorTree.CPP/include")
-target_include_directories(
-  ${PROJECT_NAME}
-  PUBLIC $<BUILD_INTERFACE:${BTV4_INCLUDE_DIRS}>)
+set(BTV4_INCLUDE_DIRS
+    "${PROJECT_SOURCE_DIR}/thirdparty/BehaviorTree.CPP/include")
+target_include_directories(${PROJECT_NAME}
+                           PUBLIC $<BUILD_INTERFACE:${BTV4_INCLUDE_DIRS}>)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC ompl behaviortree_cpp)
+target_link_libraries(${PROJECT_NAME} PUBLIC planner_bt_engine ompl
+                                             behaviortree_cpp)
 
 set_target_properties(
   ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${TAMPL_VERSION}"
@@ -76,6 +80,10 @@ set_target_properties(
 include(CMakePackageConfigHelpers)
 set(VERSION_FILE
     "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME}-config-version.cmake")
+configure_package_config_file(
+  ${TAMPL_CMAKE_CONFIG_TEMPLATE} ${TAMPL_CMAKE_PROJECT_CONFIG_FILE}
+  INSTALL_DESTINATION ${TAMPL_CONFIG_INSTALL_DIR}
+  NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 write_basic_package_version_file(
   ${TAMPL_CMAKE_VERSION_CONFIG_FILE}
   VERSION ${TAMPL_VERSION}
@@ -91,7 +99,7 @@ set_target_properties(
              "${CMAKE_INSTALL_RPATH}:${_rpath_portable_origin}/../lib")
 
 install(
-  TARGETS ${PROJECT_NAME} ompl
+  TARGETS ${PROJECT_NAME} planner_bt_engine ompl
   EXPORT ${TAMPL_TARGETS_EXPORT_NAME}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

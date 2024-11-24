@@ -26,22 +26,12 @@ FastForward::FastForward() {
   }
 }
 
-bool FastForward::solve(const std::shared_ptr<core::Environment> &env) {
-  // cast env into pddl-specific environment (ff requires this)
-  auto pddl_env = std::dynamic_pointer_cast<environment::PDDLEnvironment>(env);
-  if (!pddl_env) {
-    std::cerr
-        << "Failed to cast the input env to environment::PDDLEnvironment. Make "
-           "sure you are passing an instance of environment::PDDLEnvironment "
-           "type\n";
-    return false; // Handle the failure case appropriately
-  }
-
+bool FastForward::solve(const std::string &domain_file,
+                        const std::string &problem_file) {
   std::ostringstream cmd_stream;
   cmd_stream << "gtimeout"
-             << " " << 10 << " " << binary_path_ << " -o "
-             << pddl_env->pddl_domain().get_file_path() << " -f "
-             << pddl_env->pddl_problem().get_file_path();
+             << " " << 10 << " " << binary_path_ << " -o " << domain_file
+             << " -f " << problem_file;
   const std::string cmd_str = cmd_stream.str();
 
   // open a pipe to execute the command and read the output
@@ -66,5 +56,20 @@ bool FastForward::solve(const std::shared_ptr<core::Environment> &env) {
 
   return true;
 }
+
+// bool FastForward::solve(const std::shared_ptr<core::Environment> &env) {
+//   // cast env into pddl-specific environment (ff requires this)
+//   auto pddl_env = std::dynamic_pointer_cast<environment::PDDLEnvironment>(env);
+//   if (!pddl_env) {
+//     std::cerr
+//         << "Failed to cast the input env to environment::PDDLEnvironment. Make "
+//            "sure you are passing an instance of environment::PDDLEnvironment "
+//            "type\n";
+//     return false; // Handle the failure case appropriately
+//   }
+
+//   return solve(pddl_env->pddl_domain().get_file_path(),
+//                pddl_env->pddl_problem().get_file_path());
+// }
 
 } // namespace tampl::planner

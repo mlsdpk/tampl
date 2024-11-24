@@ -1,4 +1,5 @@
 add_subdirectory(agent)
+add_subdirectory(bt)
 add_subdirectory(core)
 add_subdirectory(environment)
 add_subdirectory(planner)
