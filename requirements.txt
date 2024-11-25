@@ -1,3 +1,7 @@
 pddlgym # move this to extensions
 pybullet
 pybind11-global
+
+# documentation related
+sphinx
+sphinx-rtd-theme
