@@ -1,6 +1,8 @@
 Task and Motion Planning Library (TAMPL)
 ========================================
 
+An all-in-one library for prototyping, benchmarking, and integrating task and motion planning applications into real-world systems, all powered by behavior trees.
+
 Getting Started
 ---------------
 Ready to dive in? Visit the :ref:`Getting Started <getting_started>` page to set up TAMPL on your machine and run your first example.

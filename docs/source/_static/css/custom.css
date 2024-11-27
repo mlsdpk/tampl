@@ -1,0 +1,16 @@
+.wy-side-nav-search {
+    background-color: #e4e4e4;
+}
+
+.wy-nav-top {
+    background-color: #e4e4e4;
+    color: #333131;
+}
+
+.wy-nav-top a {
+    color: #333131;
+}
+
+.wy-side-nav-search .wy-dropdown>a,.wy-side-nav-search>a {
+    color: #333131;
+}

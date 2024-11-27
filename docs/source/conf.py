@@ -15,7 +15,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Tampl'
+project = 'tampl'
 copyright = '2024, Phone Thiha Kyaw'
 author = 'Phone Thiha Kyaw'
 
@@ -56,3 +56,6 @@ html_theme_options = {
 }
 
 html_favicon = "_static/tampl-logo-dark.png"
+
+def setup (app):
+    app.add_css_file('css/custom.css')
