@@ -1,0 +1,50 @@
+<!-- Decoupled Task and Motion Planner (Task Planning First, Motion Refinement Afterwards)
+
+    Note: There is no feedback loop back to the task planner.
+    If motion planning fails, the entire planning process will fail.
+    This issue arises if:
+        1. The problem does not adhere to the downward refinement property.
+        2. The planner is not allocated sufficient time for motion planning.
+
+    Requirements from user:
+        1) PDDL domain and problem files (through engine specific simulator)
+        2) collision checker (through engine specific simulator)
+        3) state samplers (if default ones are not enough) -->
+
+<root BTCPP_format="4">
+    <BehaviorTree ID="MainTree">
+        <!-- Sequence to execute task planning followed by motion refinement -->
+        <Sequence name="task_planning_sequence">
+            <!-- Step 1: Task Planning -->
+            <PDDLPlanner name="task_planner"
+                id="FastForward"
+                task_plan="{task_plan}" />
+
+            <!-- Step 2: Motion Refinement for the generated task plan -->
+            <Sequence name="motion_refinement_sequence">
+                <!-- Iterate through each action in the discrete task plan -->
+                <LoopTaskPlan name="task_plan_iterator"
+                    queue="{task_plan}"
+                    value="{action}">
+                    <!-- TODO: Generate start and goal states from the current action -->
+                    <ExtractStartAndGoalFromAction name="state_sampler"
+                        action="{action}"
+                        start="{start_state}"
+                        goal="{goal_state}" />
+
+                    <!-- Plan a continuous motion between the start and goal states -->
+                    <MotionPlanner name="motion_planner"
+                        id="RRTConnect"
+                        start="{start_state}"
+                        goal="{goal_state}"
+                        motion_plan="{motion_plan}" />
+
+                    <!-- Save the pair of (task action, motion plan) for later execution -->
+                    <AddToPlanSkeleton name="plan_storage"
+                        action="{action}"
+                        motion_plan="{motion_plan}" />
+                </LoopTaskPlan>
+            </Sequence>
+        </Sequence>
+    </BehaviorTree>
+</root>

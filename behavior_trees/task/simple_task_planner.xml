@@ -1,0 +1,27 @@
+<!-- Simple task planning behavior tree using heuristic search.
+    Available algorithms (FastForward, FastDownward)
+
+    Requirements from user:
+        1) PDDL domain and problem files (through engine specific simulator) -->
+
+<root BTCPP_format="4">
+    <BehaviorTree ID="MainTree">
+        <!-- Sequence to execute task planning -->
+        <Sequence name="task_planning_sequence">
+            <!-- Task Planning -->
+            <PDDLPlanner name="task_planner"
+                id="FastForward"
+                task_plan="{task_plan}" />
+
+            <!-- Iterate through each action in the discrete task plan -->
+            <LoopTaskPlan name="task_plan_iterator"
+                queue="{task_plan}"
+                value="{action}">
+
+                <!-- Save each task action in the plan for later execution -->
+                <AddToPlanSkeleton name="plan_storage"
+                    action="{action}" />
+            </LoopTaskPlan>
+        </Sequence>
+    </BehaviorTree>
+</root>
