@@ -1,24 +1,74 @@
 # Task and Motion Planning Library (TAMPL)
 
-## Build instructions for development (temporary)
+## Development Guide
 
-### setup
-```
-$ git clone --recursive https://github.com/mlsdpk/tampl.git
-$ python -m venv tampl_venv
-$ source tampl_venv/bin/activate
-$ pip install -r requirements.txt
-```
+### Prerequisites
 
-### build and install pytampl
-```
-$ pip install . --config-settings=build.tool-args=-j8
-```
+**Docker**: Ensure you have Docker installed on your machine. You can download and install Docker from [here](https://docs.docker.com/engine/install/).
 
-### build and install pytampl-extensions
-```
-$ cd extensions && pip install .
-```
+### First-Time Setup
+
+1. **Clone the Repository**
+   Clone the repository to your local machine:
+   ```bash
+   $ git clone https://github.com/mlsdpk/tampl.git
+   $ cd tampl
+   ```
+
+2. **Set Up the Development Environment**
+   Run the following command **from the repository's top-level directory** to build and launch the development environment:
+   ```bash
+   $ docker-compose up --build dev
+   ```
+   > **Note:** This process will install all necessary dependencies and may take some time, depending on your machine's performance.
+
+   If successful, you should see output similar to:
+   ```plaintext
+   => => naming to docker.io/library/tampl:dev
+   [+] Running 1/1
+    ✔ Container tampl-dev-1  Recreated
+   Attaching to tampl-dev-1
+   ```
+
+### GUI Support
+
+If your development workflow requires a graphical user interface (GUI), follow these steps to enable GUI access via **NoVNC**:
+
+1. **Launch the NoVNC Service**
+   Open a new terminal, navigate to the repository's top-level directory, and execute:
+   ```bash
+   $ docker-compose up --build novnc
+   ```
+   This will start a NoVNC server that provides a browser-based VNC (Virtual Network Computing) interface for interacting with your development container’s GUI.
+
+2. **Access the GUI**
+   Open a web browser and go to:
+   [http://localhost:8080/vnc.html](http://localhost:8080/vnc.html)
+
+   You should now see the graphical interface of your Docker container.
+
+### Development Workflow
+
+1. **Access the Development Container**
+   Ensure the development container is running (see the [First-Time Setup](#first-time-setup) section). Open a new terminal and run:
+   ```bash
+   $ docker exec -it tampl-dev-1 bash
+   ```
+
+   This command will give you an interactive shell inside the container.
+
+2. **Build and Install `pytampl`**
+   To build and install the core `pytampl` module, run:
+   ```bash
+   $ pip install . --config-settings=build.tool-args=-j8
+   ```
+
+3. **Build and Install `pytampl-extensions`**
+   To build and install the `pytampl-extensions` module, navigate to the `extensions` directory:
+   ```bash
+   $ cd extensions
+   $ pip install .
+   ```
 
 ## Use Cases / Examples
 
