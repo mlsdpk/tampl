@@ -34,6 +34,9 @@ RUN apt-get update && \
     wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# add custom library paths to the dynamic linker configuration
+RUN echo "/usr/local/lib" >> /etc/ld.so.conf.d/99local.conf && ldconfig
+
 ENV LANG en_GB.UTF-8
 ENV LANGUAGE en_GB.UTF-8
 

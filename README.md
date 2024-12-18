@@ -18,7 +18,7 @@
 2. **Set Up the Development Environment**
    Run the following command **from the repository's top-level directory** to build and launch the development environment:
    ```bash
-   $ docker-compose up --build dev
+   $ docker compose up --build dev
    ```
    > **Note:** This process will install all necessary dependencies and may take some time, depending on your machine's performance.
 
@@ -37,7 +37,7 @@ If your development workflow requires a graphical user interface (GUI), follow t
 1. **Launch the NoVNC Service**
    Open a new terminal, navigate to the repository's top-level directory, and execute:
    ```bash
-   $ docker-compose up --build novnc
+   $ docker compose up --build novnc
    ```
    This will start a NoVNC server that provides a browser-based VNC (Virtual Network Computing) interface for interacting with your development container’s GUI.
 
