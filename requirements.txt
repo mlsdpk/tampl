@@ -1,3 +1,9 @@
-pddlgym # move this to extensions
-pybullet
+packaging==24.2
+pytest
 pybind11-global
+pddl==0.4.1
+
+# TODO: make the followings as optional tampl extensions
+pddlgym
+pygame
+pybullet==3.2.6

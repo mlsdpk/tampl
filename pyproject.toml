@@ -29,7 +29,6 @@ build-dir = "build/{wheel_tag}/{build_type}"
 wheel.exclude = ["**.cpp", "**.hpp", "**.txt"]
 logging.level = "INFO"
 build.verbose = true
-cmake.args = ["-DOMPL_BUILD_TESTS=OFF"]
 
 [tool.setuptools.packages.find]
 where = ["bindings"]

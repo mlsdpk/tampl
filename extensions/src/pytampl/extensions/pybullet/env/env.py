@@ -150,7 +150,7 @@ class PyBulletEnv(Environment):
 
             # only supports revolute joint for now
             if joint_info[idx["jointType"]] != pybullet.JOINT_FIXED:
-                print(f"joint name: {joint_info[idx["jointName"]]}, lower: {joint_info[idx["jointLowerLimit"]]}, upper: {joint_info[idx["jointUpperLimit"]]} q: ", q)
+                print(f"joint name: {joint_info[idx['jointName']]}, lower: {joint_info[idx['jointLowerLimit']]}, upper: {joint_info[idx['jointUpperLimit']]} q: {q}")
                 bounds.append((joint_info[idx["jointLowerLimit"]], joint_info[idx["jointUpperLimit"]]))
 
         return bounds

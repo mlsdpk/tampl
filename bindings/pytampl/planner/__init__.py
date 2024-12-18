@@ -1,1 +1,2 @@
-from .planner import FastForward
+# comment this until temporal Fast Downward is supported
+# from .planner import FastForward
