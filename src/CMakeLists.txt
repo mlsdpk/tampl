@@ -30,7 +30,6 @@ set(CMAKE_INSTALL_RPATH "${_rpath_portable_origin}")
 # outside the build tree to the install RPATH
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-find_package(Eigen3 REQUIRED)
 # create tampl as an empty lib for now
 add_library(${PROJECT_NAME} SHARED)
 
@@ -47,32 +46,44 @@ set(SRC_FILES tampl.cpp ${_agent_src_files} ${_bt_src_files} ${_core_src_files}
 target_sources(${PROJECT_NAME} PRIVATE ${SRC_FILES})
 target_include_directories(
   ${PROJECT_NAME}
-  PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>
-         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-         $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>
-         $<INSTALL_INTERFACE:${TAMPL_INCLUDE_INSTALL_DIR}>)
-target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC "${Boost_INCLUDE_DIR}")
+  PUBLIC
+    ${OMPL_INCLUDE_DIRS}
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>
+    $<INSTALL_INTERFACE:${TAMPL_INCLUDE_INSTALL_DIR}>)
 
-# ompl related
-set(OMPL_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/thirdparty/ompl/src")
-target_include_directories(
+target_link_libraries(
   ${PROJECT_NAME}
-  PUBLIC $<BUILD_INTERFACE:${OMPL_INCLUDE_DIRS}>
-         # for ompl/config.h
-         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/thirdparty/ompl/src>)
+  PUBLIC
+    ompl
+    behaviortree_cpp
+    ${YAMLCPP_LIBRARIES})
 
-# BT related
-set(BTV4_INCLUDE_DIRS
-    "${PROJECT_SOURCE_DIR}/thirdparty/BehaviorTree.CPP/include")
-target_include_directories(${PROJECT_NAME}
-                           PUBLIC $<BUILD_INTERFACE:${BTV4_INCLUDE_DIRS}>)
+if(TAMPL_BUILD_PYBINDINGS)
+  target_include_directories(
+    ${PROJECT_NAME}
+    PUBLIC
+      $<BUILD_INTERFACE:${PYBIND11_INCLUDE_DIR}>
+      $<BUILD_INTERFACE:${Python3_INCLUDE_DIRS}>)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC planner_bt_engine ompl
-                                             behaviortree_cpp)
+  target_link_libraries(
+    ${PROJECT_NAME}
+    PUBLIC
+      ${pybind11_LIBRARIES}
+      pybind11::module
+      pybind11::pybind11
+      pybind11::embed
+      ${Python3_LIBRARIES})
+endif()
 
 set_target_properties(
   ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "${PROJECT_NAME}-${TAMPL_VERSION}"
                              POSITION_INDEPENDENT_CODE ON)
+
+# Make sure OS X does not have any issues with missing symbols
+if(APPLE)
+  target_link_libraries(${PROJECT_NAME} PRIVATE "-undefined dynamic_lookup")
+endif(APPLE)
 
 # INSTALL
 
@@ -99,7 +110,7 @@ set_target_properties(
              "${CMAKE_INSTALL_RPATH}:${_rpath_portable_origin}/../lib")
 
 install(
-  TARGETS ${PROJECT_NAME} planner_bt_engine ompl
+  TARGETS ${PROJECT_NAME}
   EXPORT ${TAMPL_TARGETS_EXPORT_NAME}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
