@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+
+include("${CMAKE_CURRENT_LIST_DIR}/tampl-targets.cmake")
+
+if(NOT tampl_FIND_QUIETLY)
+  message(STATUS "Found tampl version ${TAMPL_VERSION}")
+endif()
