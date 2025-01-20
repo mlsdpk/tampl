@@ -2,7 +2,6 @@
 
 #include "tampl/conversions.hpp"
 #include "tampl/core/planner.hpp"
-#include "tampl/environment/pddl_env.hpp"
 
 #include <filesystem>
 #include <iostream>

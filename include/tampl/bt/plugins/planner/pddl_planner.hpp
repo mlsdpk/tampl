@@ -1,7 +1,11 @@
 #pragma once
 
+#include <deque>
+
 #include "behaviortree_cpp/behavior_tree.h"
-#include "tampl/planner/fast_forward/fast_forward.hpp"
+// #include "tampl/planner/fast_forward/fast_forward.hpp"
+
+#include "tampl/core/action.hpp"
 
 namespace tampl::bt::planner {
 
@@ -41,6 +45,6 @@ public:
 private:
   /// @brief Instance of the planner used for planning.
   /// @todo(Phone): change this to PDDL specific planner class
-  std::unique_ptr<tampl::planner::FastForward> planner_;
+  // std::unique_ptr<tampl::planner::FastForward> planner_;
 };
 } // namespace tampl::bt::planner

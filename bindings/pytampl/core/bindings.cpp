@@ -1,20 +1,10 @@
+#include "pytampl/core/action.hpp"
 #include "pytampl/typedefs.hpp"
-#include "tampl/core/action.hpp"
 #include "tampl/core/state.hpp"
 
 namespace tampl::pytampl {
 
 PYBIND11_MODULE(core, m) {
-  using class_t = tampl::core::Action;
-  py::class_<class_t>(m, "Action")
-      .def(py::init<>())
-      .def(py::init<const std::shared_ptr<tampl::core::state::State> &,
-                    const std::shared_ptr<tampl::core::state::State> &>())
-      .def_property("type", &class_t::get_type, &class_t::set_type)
-      .def_property("parameters", &class_t::get_parameters,
-                    &class_t::set_parameters)
-      .def("get_from_state", &class_t::get_from_state)
-      .def("get_to_state", &class_t::get_to_state);
 
   //////////////////////////////////////////////////////////
 
@@ -84,6 +74,37 @@ PYBIND11_MODULE(core, m) {
           "Access element (const)")
       .def("__len__", &real_state_t::size,
            "Return the length of the values vector");
+
+  //////////////////////////////////////////////////////////
+
+  // action related
+
+  // action submodule
+  auto m_action = m.def_submodule(
+      "action", "Python bindings for the namespace tampl::core::action.");
+
+  // Base action class
+  using base_action_t = tampl::core::Action;
+  using trampoline_action_t = tampl::pytampl::PyAction;
+  py::class_<base_action_t, trampoline_action_t,
+             std::shared_ptr<base_action_t>>(m_action, "Action")
+      .def(py::init<>())
+      .def(py::init<const std::string &>())
+      .def(py::init<const std::shared_ptr<tampl::core::state::State> &,
+                    const std::shared_ptr<tampl::core::state::State> &>())
+      .def_property("id", &base_action_t::get_id, &base_action_t::set_id)
+      .def_property("type", &base_action_t::get_type, &base_action_t::set_type)
+      .def_property("parameters", &base_action_t::get_parameters,
+                    &base_action_t::set_parameters)
+      .def("get_from_state", &base_action_t::get_from_state)
+      .def("get_to_state", &base_action_t::get_to_state)
+      .def("on_init", &base_action_t::on_init)
+      .def("on_activate", &base_action_t::on_activate)
+      .def("on_execute", &base_action_t::on_execute)
+      .def("on_deactivate", &base_action_t::on_deactivate)
+      .def("on_shutdown", &base_action_t::on_shutdown);
+
+  //////////////////////////////////////////////////////////
 }
 
 } // namespace tampl::pytampl

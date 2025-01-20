@@ -10,7 +10,7 @@ BT::PortsList PDDLPlanner::providedPorts() {
   return {BT::InputPort<std::string>("id"),
           BT::InputPort<std::string>("domain_file"),
           BT::InputPort<std::string>("problem_file"),
-          BT::OutputPort<std::vector<tampl::core::Action>>("plan")};
+          BT::OutputPort<BT::SharedQueue<tampl::core::Action>>("plan")};
 }
 
 BT::NodeStatus PDDLPlanner::tick() {
@@ -23,10 +23,10 @@ BT::NodeStatus PDDLPlanner::tick() {
                            planner_id.error());
   }
 
-  if (planner_id == "FastForward") {
-    planner_ = std::make_unique<tampl::planner::FastForward>();
+  if (planner_id == "FastDownward") {
+    // planner_ = std::make_unique<tampl::planner::FastForward>();
   } else {
-    std::cout << "Unsupported planner id provided. Only FastForward is "
+    std::cout << "Unsupported planner id provided. Only FastDownward is "
                  "supported at the moment!\n";
     return BT::NodeStatus::FAILURE;
   }
@@ -50,12 +50,14 @@ BT::NodeStatus PDDLPlanner::tick() {
   // use the method value() to extract the valid message.
   std::cout << "Problem File: " << problem_file.value() << std::endl;
 
-  bool solved = planner_->solve(domain_file.value(), problem_file.value());
+  // bool solved = planner_->solve(domain_file.value(), problem_file.value());
 
-  if (solved) {
-    const auto &plan = planner_->get_solution();
-    setOutput("plan", plan);
-  }
+  // if (solved) {
+  //   const auto &plan = planner_->get_solution();
+  //   setOutput("plan", plan);
+  // }
+
+  bool solved = true;
 
   return solved ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
 }

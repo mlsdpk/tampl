@@ -8,14 +8,14 @@ FastDownward::FastDownward() {
   if (fd_binary && std::filesystem::exists(fd_binary)) {
     binary_path_ = std::string(fd_binary);
   } else {
-    // Try the install location
-    if (std::filesystem::exists(FD_PLANNER_EXECUTABLE_INSTALL)) {
-      binary_path_ = FD_PLANNER_EXECUTABLE_INSTALL;
-    }
-    // Fallback to the build directory
-    else if (std::filesystem::exists(FD_PLANNER_EXECUTABLE_BUILD)) {
-      binary_path_ = FD_PLANNER_EXECUTABLE_BUILD;
-    }
+    // // Try the install location
+    // if (std::filesystem::exists(FD_PLANNER_EXECUTABLE_INSTALL)) {
+    //   binary_path_ = FD_PLANNER_EXECUTABLE_INSTALL;
+    // }
+    // // Fallback to the build directory
+    // else if (std::filesystem::exists(FD_PLANNER_EXECUTABLE_BUILD)) {
+    //   binary_path_ = FD_PLANNER_EXECUTABLE_BUILD;
+    // }
   }
 
   if (!binary_path_.empty()) {
@@ -26,8 +26,8 @@ FastDownward::FastDownward() {
   }
 }
 
-// bool FastDownward::solve(const std::shared_ptr<core::Environment> &env) {
-//   return true;
-// }
+bool FastDownward::solve() {
+  return true;
+}
 
 } // namespace tampl::planner

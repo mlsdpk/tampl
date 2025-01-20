@@ -1,16 +1,16 @@
 #pragma once
 
-#include <string>
+namespace tampl::environment {
 
-namespace tampl::core {
-
-class Environment {
+class EnvironmentInterface {
 public:
-  Environment() = default;
-  explicit Environment(const std::string &name) {
-    printf("Creating environment %s\n", name.c_str());
-  }
-  virtual ~Environment() = default;
+  virtual ~EnvironmentInterface() = default;
+  virtual void reset() = 0;
+
+  // TODO: consider changing these to PDDL domain and problem files
+  // This means all the envs need to follow PDDL conventions
+  virtual std::string get_pddl_domain_file() = 0;
+  virtual std::string get_pddl_problem_file() = 0;
 };
 
-} // namespace tampl::core
+} // namespace tampl::environment

@@ -1,5 +1,5 @@
 <!-- Simple task planning behavior tree using heuristic search.
-    Available algorithms (FastForward, FastDownward)
+    Available algorithms (FastDownward)
 
     Requirements from user:
         1) PDDL domain and problem files (through engine specific simulator) -->
@@ -10,17 +10,20 @@
         <Sequence name="task_planning_sequence">
             <!-- Task Planning -->
             <PDDLPlanner name="task_planner"
-                id="FastForward"
+                id="FastDownward"
+                domain_file="{domain_file}"
+                problem_file="{problem_file}"
                 task_plan="{task_plan}" />
 
             <!-- Iterate through each action in the discrete task plan -->
             <LoopTaskPlan name="task_plan_iterator"
                 queue="{task_plan}"
-                value="{action}">
+                value="{task_action}">
 
                 <!-- Save each task action in the plan for later execution -->
                 <AddToPlanSkeleton name="plan_storage"
-                    action="{action}" />
+                    plan="{plan}"
+                    task_action="{task_action}" />
             </LoopTaskPlan>
         </Sequence>
     </BehaviorTree>

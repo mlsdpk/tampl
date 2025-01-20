@@ -5,5 +5,3 @@ pddl==0.4.1
 
 # TODO: make the followings as optional tampl extensions
 pddlgym
-pygame
-pybullet==3.2.6

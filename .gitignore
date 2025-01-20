@@ -1,6 +1,16 @@
+# OS-specific
 .DS_Store
-build/
+
+# build directories
+build
+
+# python-related
 __pycache__
 *.egg-info
+.pytest_cache
+
+# docs
 doxygen
+
+# venvs
 tampl_venv
