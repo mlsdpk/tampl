@@ -42,15 +42,7 @@ CPMAddPackage(
   DOWNLOAD_ONLY YES
 )
 if (downward_ADDED)
-  # Copy the translator into the output directory
-  add_custom_target(translate ALL)
-  add_custom_command(TARGET translate POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy_directory
-          ${downward_SOURCE_DIR}/src/translate
-          ${downward_BINARY_DIR}/translate
-      COMMENT "Copying translator module into output directory")
-
-  # Copy fast-downward.py script
+  # Copy fast-downward.py script into downward build directory
   add_custom_target(copy_fast_downward ALL)
   add_custom_command(TARGET copy_fast_downward POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy
@@ -58,7 +50,7 @@ if (downward_ADDED)
           ${downward_BINARY_DIR}/fast-downward.py
       COMMENT "Copying fast-downward.py into output directory")
 
-  # Copy the driver into the output directory
+  # Copy the driver into the downward build directory
   add_custom_target(copy_driver ALL)
   add_custom_command(TARGET copy_driver POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -66,6 +58,17 @@ if (downward_ADDED)
           ${downward_BINARY_DIR}/driver
       COMMENT "Copying driver module into output directory")
 
+  # fast-downward.py expects the binaries to live inside '<repo-root>/builds/<buildname>/bin'
+  set(downward_OUTPUT_DIRECTORY ${downward_BINARY_DIR}/builds/release/bin) # workaround for now
+
+  # Copy the translator into the output directory
+  add_custom_target(translate ALL)
+  add_custom_command(TARGET translate POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_directory
+          ${downward_SOURCE_DIR}/src/translate
+          ${downward_OUTPUT_DIRECTORY}/translate
+      COMMENT "Copying translator module into output directory")
+
   # Add search component as a subproject.
-  add_subdirectory(${downward_SOURCE_DIR}/src/search ${downward_BINARY_DIR}) 
+  add_subdirectory(${downward_SOURCE_DIR}/src/search ${downward_OUTPUT_DIRECTORY})
 endif()
