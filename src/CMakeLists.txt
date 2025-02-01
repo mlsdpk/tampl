@@ -58,7 +58,7 @@ target_link_libraries(
   PUBLIC
     ompl::ompl
     behaviortree_cpp
-    ${YAMLCPP_LIBRARIES})
+    yaml-cpp)
 
 if(TAMPL_BUILD_PYBINDINGS)
   target_include_directories(
