@@ -1,3 +1,5 @@
+# configure default BT plugins
+
 set(plugin_libs "")
 
 function(tampl_add_bt_plugin plugin_name src_files)
@@ -37,8 +39,9 @@ function(tampl_add_bt_plugin plugin_name src_files)
 endfunction()
 
 # register all the plugins here
+# tampl_add_bt_plugin(bt_pddl_planner ${CMAKE_CURRENT_SOURCE_DIR}/plugins/planner/pddl_planner.cpp)
 tampl_add_bt_plugin(
-  bt_pddl_planner ${CMAKE_CURRENT_SOURCE_DIR}/plugins/planner/pddl_planner.cpp)
+  bt_task_planner ${CMAKE_CURRENT_SOURCE_DIR}/plugins/planner/task_planner.cpp)
 
 # we will embed the list of plugin names inside a header file
 set(GENERATED_DIR ${CMAKE_CURRENT_BINARY_DIR}/gen)
@@ -47,3 +50,31 @@ configure_file(plugins/plugins_list.hpp.in ${GENERATED_DIR}/plugins_list.hpp)
 set(_bt_src_files
     ${CMAKE_CURRENT_SOURCE_DIR}/planner_bt_engine.cpp
     PARENT_SCOPE)
+
+#########################################################################################
+
+# configure default behavior tree xml files
+
+set(BEHAVIOR_TREES_BUILD_DIR "${CMAKE_BINARY_DIR}/behavior_trees")
+set(BEHAVIOR_TREES_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/behavior_trees")
+configure_file(behavior_trees/config.hpp.in ${CMAKE_BINARY_DIR}/include/${PROJECT_NAME}/bt/behavior_trees/config.hpp @ONLY)
+
+add_custom_target(copy_behavior_trees ALL)
+add_custom_command(TARGET copy_behavior_trees POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${PROJECT_SOURCE_DIR}/behavior_trees
+        ${CMAKE_BINARY_DIR}/behavior_trees
+    COMMENT "Copying behavior trees into build directory")
+
+install(
+    FILES
+        ${CMAKE_BINARY_DIR}/include/${PROJECT_NAME}/bt/behavior_trees/config.hpp
+    DESTINATION
+        include/${PROJECT_NAME}-${TAMPL_VERSION}/${PROJECT_NAME}/bt/behavior_trees)
+
+install(
+    DIRECTORY
+        ${PROJECT_SOURCE_DIR}/behavior_trees/
+    DESTINATION
+        share/${PROJECT_NAME}/behavior_trees
+    FILES_MATCHING PATTERN "*.xml" PATTERN "*.md")

@@ -30,6 +30,9 @@ set(CMAKE_INSTALL_RPATH "${_rpath_portable_origin}")
 # outside the build tree to the install RPATH
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
+# Where to put all the LIBRARY target files when built.
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
 # create tampl as an empty lib for now
 add_library(${PROJECT_NAME} SHARED)
 
@@ -50,6 +53,7 @@ target_include_directories(
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/src/bt/gen> # for
                                                       # bt/gen/plugins_list.hpp
+    $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
     $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>
     $<INSTALL_INTERFACE:${TAMPL_INCLUDE_INSTALL_DIR}>)
 

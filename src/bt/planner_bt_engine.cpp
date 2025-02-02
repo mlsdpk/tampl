@@ -27,6 +27,42 @@ PlannerBTEngine::PlannerBTEngine(
   }
 }
 
+PlannerBTEngine::PlannerBTEngine(
+      const std::string &bt_xml_path,
+      const std::shared_ptr<core::Domain> &domain,
+      const std::shared_ptr<core::Problem> &problem)
+  : bt_xml_path_{bt_xml_path}, domain_{domain}, problem_{problem} {
+
+  // ref: nav2_util/string_utils.hpp
+  auto split = [](const std::string &tokenstring, char delimiter) {
+    std::vector<std::string> tokens;
+
+    size_t current_pos = 0;
+    size_t pos = 0;
+    while ((pos = tokenstring.find(delimiter, current_pos)) !=
+           std::string::npos) {
+      tokens.push_back(tokenstring.substr(current_pos, pos - current_pos));
+      current_pos = pos + 1;
+    }
+    tokens.push_back(tokenstring.substr(current_pos));
+    return tokens;
+  };
+
+  auto plugin_libs = split(tampl::bt::TAMPL_DEFAULT_BT_PLUGINS, ';');
+  for (const auto &p : plugin_libs) {
+    bt_factory_.registerFromPlugin(BT::SharedLibrary::getOSName(p));
+  }
+
+  bb_ = BT::Blackboard::create();
+  // bb_->set<std::string>("domain_file", domain->get_file_path());
+  // bb_->set<std::string>("problem_file", problem->get_file_path());
+
+  tree_ = bt_factory_.createTreeFromFile(bt_xml_path_, bb_);
+
+  initialized_ = true;
+
+}
+
 PlannerBTEngine::~PlannerBTEngine() {}
 
 bool PlannerBTEngine::init() {

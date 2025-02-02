@@ -7,6 +7,8 @@
 
 // tampl related
 #include "tampl/core/action.hpp"
+#include "tampl/core/domain.hpp"
+#include "tampl/core/problem.hpp"
 #include "tampl/environment/environment_manager.hpp"
 
 namespace tampl::bt {
@@ -35,6 +37,11 @@ public:
   PlannerBTEngine(
       const std::string &bt_xml_path,
       const std::shared_ptr<environment::EnvironmentManager> &env_manager);
+
+  PlannerBTEngine(
+      const std::string &bt_xml_path,
+      const std::shared_ptr<core::Domain> &domain,
+      const std::shared_ptr<core::Problem> &problem);
 
   /**
    * @brief Destructor for the PlannerBTEngine class.
@@ -74,6 +81,9 @@ private:
   BT::Blackboard::Ptr bb_;
 
   std::string bt_xml_path_;
+
+  std::shared_ptr<core::Domain> domain_;
+  std::shared_ptr<core::Problem> problem_;
 
   /// @brief
   std::shared_ptr<environment::EnvironmentManager> env_manager_;
