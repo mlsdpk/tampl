@@ -9,6 +9,7 @@
 #include "tampl/core/action.hpp"
 #include "tampl/core/domain.hpp"
 #include "tampl/core/problem.hpp"
+#include "tampl/logger.hpp"
 
 namespace tampl::bt {
 

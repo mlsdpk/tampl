@@ -38,10 +38,22 @@ function(tampl_add_bt_plugin plugin_name src_files)
       PARENT_SCOPE)
 endfunction()
 
-# register all the plugins here
-# tampl_add_bt_plugin(bt_pddl_planner ${CMAKE_CURRENT_SOURCE_DIR}/plugins/planner/pddl_planner.cpp)
-tampl_add_bt_plugin(
-  bt_task_planner ${CMAKE_CURRENT_SOURCE_DIR}/plugins/planner/task_planner.cpp)
+##################################
+# register all the plugins below #
+##################################
+
+# actions
+tampl_add_bt_plugin(bt_action_add_to_plan_skeleton ${CMAKE_CURRENT_SOURCE_DIR}/plugins/actions/add_to_plan_skeleton.cpp)
+
+# decorators
+tampl_add_bt_plugin(bt_decorator_loop_task_plan ${CMAKE_CURRENT_SOURCE_DIR}/plugins/decorators/loop_task_plan.cpp)
+
+# planner
+tampl_add_bt_plugin(bt_task_planner ${CMAKE_CURRENT_SOURCE_DIR}/plugins/planner/task_planner.cpp)
+
+##################################
+# register all the plugins above #
+##################################
 
 # we will embed the list of plugin names inside a header file
 set(GENERATED_DIR ${CMAKE_CURRENT_BINARY_DIR}/gen)

@@ -45,7 +45,10 @@ target_link_libraries(
   PUBLIC
     ompl::ompl
     behaviortree_cpp
-    yaml-cpp)
+    yaml-cpp
+    fmt::fmt)
+
+target_compile_definitions(tampl PRIVATE TAMPL_LOG_LEVEL=tampl::LogLevel::DEBUG)
 
 if(TAMPL_BUILD_PYBINDINGS)
   target_include_directories(

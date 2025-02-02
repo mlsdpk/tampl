@@ -19,7 +19,7 @@ FastDownward::FastDownward() {
   }
 
   if (!binary_path_.empty()) {
-    printf("FD Planner binary found at %s\n", binary_path_.c_str());
+    TAMPL_DEBUG("FD Planner binary found at {}", binary_path_);
   } else {
     throw std::runtime_error("FD binary not found. Please set "
                              "FD_PLANNER_BINARY_PATH environment variable.");

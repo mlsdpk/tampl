@@ -27,27 +27,22 @@ PlannerBTEngine::PlannerBTEngine(
   for (const auto &p : plugin_libs) {
     bt_factory_.registerFromPlugin(BT::SharedLibrary::getOSName(p));
   }
-
-  bb_ = BT::Blackboard::create();
-  // bb_->set<std::string>("domain_file", domain->get_file_path());
-  // bb_->set<std::string>("problem_file", problem->get_file_path());
-
-  tree_ = bt_factory_.createTreeFromFile(bt_xml_path_, bb_);
-
-  initialized_ = true;
-
 }
 
 PlannerBTEngine::~PlannerBTEngine() {}
 
 bool PlannerBTEngine::init() {
-  // TODO: get PDDL domain and problem
 
-  // printf("[PlannerBTEngine] Using PDDL domain from %s and problem from %s\n",
-  // domain->get_file_path().c_str(), problem->get_file_path().c_str());
+  // get PDDL domain and problem
+  const std::string& domain_file = domain_->get_file_path().string();
+  const std::string& problem_file = problem_->get_file_path().string();
 
-  // sanity check whether all the actions in the domain are available in the
+  TAMPL_INFO(
+    "[PlannerBTEngine] Using PDDL domain from {} and problem from {}", domain_file, problem_file);
+
+  // TODO: sanity check whether all the actions in the domain are available in the
   // environment to execute
+  //
   // const auto &action_ids = domain->get_action_ids();
   // for (const auto &id : action_ids) {
   //   if (!env_manager_->has_action(id)) {
@@ -59,8 +54,8 @@ bool PlannerBTEngine::init() {
   // }
 
   bb_ = BT::Blackboard::create();
-  // bb_->set<std::string>("domain_file", domain->get_file_path());
-  // bb_->set<std::string>("problem_file", problem->get_file_path());
+  bb_->set<std::string>("domain_file", domain_file);
+  bb_->set<std::string>("problem_file", problem_file);
 
   tree_ = bt_factory_.createTreeFromFile(bt_xml_path_, bb_);
 

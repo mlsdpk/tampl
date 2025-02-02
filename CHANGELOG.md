@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New fast downward planner
 - Integrate fast downward to BT TaskPlanner
 - C++ examples to showcase task planning with BT
+- Minimal logging functionality (wrapper around fmt)
 
 ### Changed
 - Tidy up CMake files

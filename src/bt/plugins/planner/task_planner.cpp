@@ -8,13 +8,16 @@ TaskPlanner::TaskPlanner(const std::string &name,
 
 BT::PortsList TaskPlanner::providedPorts() {
   return {BT::InputPort<std::string>("id"),
-          BT::InputPort<std::string>("domain_file"),
-          BT::InputPort<std::string>("problem_file"),
-          BT::OutputPort<BT::SharedQueue<tampl::core::Action>>("plan")};
+
+          // we will use domain and problem files directly from blackboard as default unless it is explicitly given
+          // see: https://www.behaviortree.dev/docs/tutorial-advanced/tutorial_12_default_ports#default-blackboard-entry
+          BT::InputPort<std::string>("domain_file", "{domain_file}", "TODO"),
+          BT::InputPort<std::string>("problem_file", "{problem_file}", "TODO"),
+
+          BT::OutputPort<BT::SharedQueue<std::shared_ptr<tampl::core::Action>>>("task_plan")};
 }
 
 BT::NodeStatus TaskPlanner::tick() {
-  std::cout << "TaskPlanner: " << this->name() << std::endl;
 
   BT::Expected<std::string> planner_id = getInput<std::string>("id");
   // Check if expected is valid. If not, throw its error
@@ -26,8 +29,7 @@ BT::NodeStatus TaskPlanner::tick() {
   if (planner_id == "FastDownward") {
     planner_ = std::make_unique<tampl::planner::FastDownward>();
   } else {
-    std::cout << "Unsupported planner id provided. Only FastDownward is "
-                 "supported at the moment!\n";
+    TAMPL_ERROR("Unsupported planner id provided. Only FastDownward is supported at the moment!");
     return BT::NodeStatus::FAILURE;
   }
 
@@ -38,7 +40,7 @@ BT::NodeStatus TaskPlanner::tick() {
                            domain_file.error());
   }
   // use the method value() to extract the valid message.
-  std::cout << "Domain File: " << domain_file.value() << std::endl;
+  TAMPL_INFO("Domain File: {}", domain_file.value());
 
   BT::Expected<std::string> problem_file =
       getInput<std::string>("problem_file");
@@ -48,7 +50,7 @@ BT::NodeStatus TaskPlanner::tick() {
                            problem_file.error());
   }
   // use the method value() to extract the valid message.
-  std::cout << "Problem File: " << problem_file.value() << std::endl;
+  TAMPL_INFO("Problem File: {}", problem_file.value());
 
   // bool solved = planner_->solve(domain_file.value(), problem_file.value());
 

@@ -72,3 +72,9 @@ if (downward_ADDED)
   # Add search component as a subproject.
   add_subdirectory(${downward_SOURCE_DIR}/src/search ${downward_OUTPUT_DIRECTORY})
 endif()
+
+CPMAddPackage(
+  NAME fmt
+  GIT_TAG 11.1.3
+  GITHUB_REPOSITORY fmtlib/fmt
+)

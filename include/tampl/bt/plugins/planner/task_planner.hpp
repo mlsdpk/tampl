@@ -4,6 +4,7 @@
 
 #include "behaviortree_cpp/behavior_tree.h"
 
+#include "tampl/logger.hpp"
 #include "tampl/core/action.hpp"
 #include "tampl/planner/fast_downward/fast_downward.hpp"
 

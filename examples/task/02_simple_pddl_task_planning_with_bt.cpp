@@ -22,6 +22,9 @@ int main(int argc, char const *argv[]) {
   auto bt_xml_path = tampl::bt::default_behavior_trees_dir() / "task/simple_task_planner.xml";
   auto engine = std::make_shared<tampl::bt::PlannerBTEngine>(bt_xml_path.string(), domain, problem);
 
+  // initialize the planner BT engine
+  engine->init();
+
   // run the planner (this will only find a solution plan 
   // and do not execute each registered action callbacks)
   bool solved = engine->solve();

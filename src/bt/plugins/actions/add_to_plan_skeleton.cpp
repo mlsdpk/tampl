@@ -37,11 +37,11 @@ BT::NodeStatus AddToPlanSkeleton::tick() {
     if (any_ptr->empty()) {
       // The entry hasn't been initialized by any other node, yet.
       // Let's initialize it ourselves
-      plan_skeleton_t plan = {std::make_pair<task_action, motion_plan>};
+      plan_skeleton_t plan = {std::make_pair(task_action.value(), motion_plan.value())};
       any_ptr.assign(plan);
     } else if (auto *vect_ptr = any_ptr->castPtr<plan_skeleton_t>()) {
       // NOTE: vect_ptr would be nullptr, if we try to cast it to the wrong type
-      vect_ptr->push_back(std::make_pair<task_action, motion_plan>);
+      vect_ptr->push_back(std::make_pair(task_action.value(), motion_plan.value()));
     }
     return BT::NodeStatus::SUCCESS;
   }

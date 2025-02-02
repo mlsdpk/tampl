@@ -2,6 +2,7 @@
 
 #include "tampl/conversions.hpp"
 #include "tampl/core/planner.hpp"
+#include "tampl/logger.hpp"
 
 #include <filesystem>
 #include <iostream>

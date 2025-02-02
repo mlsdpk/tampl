@@ -12,3 +12,6 @@
 
 // planner
 #include "tampl/planner/fast_downward/fast_downward.hpp"
+
+// misc
+#include "tampl/logger.hpp"

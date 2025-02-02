@@ -3,6 +3,7 @@
 namespace tampl::core
 {
 
-Problem::Problem(const std::string& file) : pddl_file_{file} {}
+Problem::Problem(const std::string& file) : pddl_file_{std::filesystem::path{file}} {}
 
-}
+} // namespace tampl::core
+
