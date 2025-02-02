@@ -52,14 +52,14 @@ BT::NodeStatus TaskPlanner::tick() {
   // use the method value() to extract the valid message.
   TAMPL_INFO("Problem File: {}", problem_file.value());
 
-  // bool solved = planner_->solve(domain_file.value(), problem_file.value());
+  // since we are assuming all task planners to rely on PDDL at the moment
+  // we can directly call this method
+  bool solved = planner_->solve(domain_file.value(), problem_file.value());
 
   // if (solved) {
   //   const auto &plan = planner_->get_solution();
   //   setOutput("plan", plan);
   // }
-
-  bool solved = true;
 
   return solved ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
 }

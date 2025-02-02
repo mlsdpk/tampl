@@ -26,7 +26,20 @@ FastDownward::FastDownward() {
   }
 }
 
-bool FastDownward::solve() {
+bool FastDownward::solve(
+  const std::filesystem::path &domain_file,
+  const std::filesystem::path &problem_file) {
+
+  std::ostringstream cmd_stream;
+  cmd_stream << binary_path_ << " "
+             << domain_file.string() << " "
+             << problem_file.string() << " "
+             << "--search 'astar(lmcut())'"; // hardcoded for now
+  const std::string& cmd_str = cmd_stream.str();
+
+  TAMPL_DEBUG("[FastDownward] Executing cmd: {}", cmd_str);
+  system(cmd_str.c_str());
+
   return true;
 }
 

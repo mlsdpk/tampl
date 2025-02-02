@@ -8,10 +8,8 @@
 int main(int argc, char const *argv[]) {
 
   // create domain and problem instances from pddl files
-  auto domain = std::make_shared<tampl::core::Domain>(
-     "../../examples/task/pddl/lets_eat/domain.pddl");
-  auto problem = std::make_shared<tampl::core::Problem>(
-    "../../examples/task/pddl/lets_eat/problem.pddl");
+  auto domain = std::make_shared<tampl::core::Domain>("data/pddl/task/lets_eat/domain.pddl");
+  auto problem = std::make_shared<tampl::core::Problem>("data/pddl/task/lets_eat/problem.pddl");
 
   // we need to make sure each action in the domain has associated executors
   domain->register_action("pick-up",[](){ std::cout << "Executing action 'pick-up'\n"; });
