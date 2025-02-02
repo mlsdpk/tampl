@@ -2,7 +2,6 @@
 
 #include "tampl/conversions.hpp"
 #include "tampl/core/planner.hpp"
-#include "tampl/environment/pddl_env.hpp"
 
 #include <filesystem>
 #include <iostream>
@@ -14,7 +13,7 @@ namespace tampl::planner {
 class FastDownward : public core::Planner {
 public:
   FastDownward();
-  bool solve(const std::shared_ptr<core::Environment> &env) override;
+  bool solve();
 
 private:
   std::string binary_path_;

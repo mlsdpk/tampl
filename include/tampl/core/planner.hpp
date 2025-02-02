@@ -5,9 +5,6 @@
 #include <vector>
 
 #include "tampl/core/action.hpp"
-#include "tampl/core/environment.hpp"
-#include "tampl/pddl/domain.hpp"
-#include "tampl/pddl/problem.hpp"
 
 namespace tampl::core {
 
@@ -19,8 +16,6 @@ public:
   }
   virtual ~Planner() = default;
 
-  // TODO(Phone): remove this later
-  virtual bool solve(const std::shared_ptr<Environment> &env) { return false; };
   const std::vector<tampl::core::Action> &get_solution() const;
 
 protected:

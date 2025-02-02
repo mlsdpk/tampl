@@ -10,11 +10,11 @@ FastDownward::FastDownward() {
   } else {
     // Try the install location
     if (std::filesystem::exists(FD_PLANNER_EXECUTABLE_INSTALL)) {
-      binary_path_ = FD_PLANNER_EXECUTABLE_INSTALL;
+       binary_path_ = FD_PLANNER_EXECUTABLE_INSTALL;
     }
     // Fallback to the build directory
     else if (std::filesystem::exists(FD_PLANNER_EXECUTABLE_BUILD)) {
-      binary_path_ = FD_PLANNER_EXECUTABLE_BUILD;
+       binary_path_ = FD_PLANNER_EXECUTABLE_BUILD;
     }
   }
 
@@ -26,7 +26,7 @@ FastDownward::FastDownward() {
   }
 }
 
-bool FastDownward::solve(const std::shared_ptr<core::Environment> &env) {
+bool FastDownward::solve() {
   return true;
 }
 
