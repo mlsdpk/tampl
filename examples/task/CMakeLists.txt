@@ -1,0 +1,2 @@
+add_executable(01_simple_pddl_task_planning 01_simple_pddl_task_planning.cpp)
+target_link_libraries(01_simple_pddl_task_planning PUBLIC tampl)

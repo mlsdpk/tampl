@@ -9,10 +9,8 @@
         <!-- Sequence to execute task planning -->
         <Sequence name="task_planning_sequence">
             <!-- Task Planning -->
-            <PDDLPlanner name="task_planner"
+            <TaskPlanner name="task_planner"
                 id="FastDownward"
-                domain_file="{domain_file}"
-                problem_file="{problem_file}"
                 task_plan="{task_plan}" />
 
             <!-- Iterate through each action in the discrete task plan -->

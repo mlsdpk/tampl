@@ -17,3 +17,5 @@ endmacro()
 # install(
 #   TARGETS tampl_example_pygame_tamp_discrete
 #   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+add_subdirectory(task)
