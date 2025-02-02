@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- New fast downward planner
+- Integrate fast downward to BT TaskPlanner
+- C++ examples to showcase task planning with BT
 
 ### Changed
 - Tidy up CMake files
@@ -17,5 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 
 ### Removed
+- FastForward planner is no longer supported
+- Remove all the enviornment (simulation) related stuffs
+    - tampl extensions (pddlgym, pybullet etc)
 
 ### Fixed
