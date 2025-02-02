@@ -1,17 +1,3 @@
-set(TAMPL_TARGET_NAME "tampl")
-
-include(GNUInstallDirs)
-set(TAMPL_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/cmake/tampl")
-set(TAMPL_INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/tampl")
-set(TAMPL_TARGETS_EXPORT_NAME "tampl-targets")
-set(TAMPL_CMAKE_CONFIG_TEMPLATE
-    "${PROJECT_SOURCE_DIR}/cmake/tampl-config.cmake.in")
-set(TAMPL_CMAKE_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}")
-set(TAMPL_CMAKE_VERSION_CONFIG_FILE
-    "${TAMPL_CMAKE_CONFIG_DIR}/tampl-config-version.cmake")
-set(TAMPL_CMAKE_PROJECT_CONFIG_FILE
-    "${TAMPL_CMAKE_CONFIG_DIR}/tampl-config.cmake")
-
 # RPATH stuff see https://cmake.org/Wiki/CMake_RPATH_handling
 if(APPLE)
   set(CMAKE_MACOSX_RPATH ON)
@@ -37,14 +23,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 add_library(${PROJECT_NAME} SHARED)
 
 # include all sub directories
-add_subdirectory(agent)
 add_subdirectory(bt)
 add_subdirectory(core)
-add_subdirectory(environment)
 add_subdirectory(planner)
 
-set(SRC_FILES tampl.cpp ${_agent_src_files} ${_bt_src_files} ${_core_src_files}
-              ${_environment_src_files} ${_planner_src_files})
+set(SRC_FILES tampl.cpp ${_bt_src_files} ${_core_src_files} ${_planner_src_files})
 
 target_sources(${PROJECT_NAME} PRIVATE ${SRC_FILES})
 target_include_directories(
@@ -55,7 +38,7 @@ target_include_directories(
                                                       # bt/gen/plugins_list.hpp
     $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include>
     $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>
-    $<INSTALL_INTERFACE:${TAMPL_INCLUDE_INSTALL_DIR}>)
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}>)
 
 target_link_libraries(
   ${PROJECT_NAME}
@@ -103,5 +86,4 @@ packageProject(
   INCLUDE_DESTINATION include/${PROJECT_NAME}-${TAMPL_VERSION}
   VERSION_HEADER "${VERSION_HEADER_LOCATION}"
   COMPATIBILITY SameMinorVersion
-  DEPENDENCIES "ompl 1.6.0;behaviortree_cpp 4.6.2"
-)
+  DEPENDENCIES "ompl 1.6.0;behaviortree_cpp 4.6.2")

@@ -2,22 +2,44 @@ import os
 
 from typing import List
 
-from pytampl.core import Action
-from pytampl.planner import FastForward
+from pytampl.bt import PlannerBTEngine
+from pytampl.core import Action, Domain, Problem
 
-# absolute paths to domain and problem file
-domain_file = os.path.join(os.path.dirname(__file__), "pddl/lets_eat/domain.pddl")
-problem_file = os.path.join(os.path.dirname(__file__), "pddl/lets_eat/problem.pddl")
+# create domain and problem instances from pddl files
+domain = Domain(file=os.path.join(os.path.dirname(__file__), "pddl/lets_eat/domain.pddl")
+problem = Problem(file=os.path.join(os.path.dirname(__file__), "pddl/lets_eat/problem.pddl")
 
-# create task planner
-# available planners (Fast Forward, Fast Downward)
-planner = FastForward()
+# we need to make sure each action in the domain has associated executors
+def action_pick_up_callback():
+    print("Executing action 'pick-up')
 
-# solve the task planning problem
-if planner.solve(domain_file, problem_file):
-    plan: List[Action] = planner.get_solution()
-    print("======== Plan ========")
-    for i, action in enumerate(plan):
-        print(f"{i}: {action.type} ({' '.join(action.parameters)})")
+
+def action_drop_callback():
+    print("Executing action 'drop')
+
+
+def action_move_callback():
+    print("Executing action 'move')
+
+
+# each action id must be the same as the ones described in the domain file
+domain.register_action('pick-up', action_pick_up_callback)
+domain.register_action('drop', action_drop_callback)
+domain.register_action('move', action_move_callback)
+
+# create planner BT engine
+bt_xml_path = os.path.join(os.path.dirname(__file__), "../../behavior_trees/task/simple_task_planner.xml")
+engine = PlannerBTEngine(bt_xml_path=bt_xml_path, domain=domain, problem=problem)
+
+# run the planner (this will only find a solution plan 
+# and do not execute each registered action callbacks)
+solved = engine.solve()
+
+if solved:
+    # get the solution
+    plan: List[Action] = engine.get_plan()
+
+    # execute the solution plan
+    engine.execute(plan)
 else:
     print("Solution not found!")

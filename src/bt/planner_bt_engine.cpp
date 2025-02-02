@@ -3,31 +3,6 @@
 namespace tampl::bt {
 
 PlannerBTEngine::PlannerBTEngine(
-    const std::string &bt_xml_path,
-    const std::shared_ptr<environment::EnvironmentManager> &env_manager)
-    : bt_xml_path_{bt_xml_path}, env_manager_{env_manager} {
-  // ref: nav2_util/string_utils.hpp
-  auto split = [](const std::string &tokenstring, char delimiter) {
-    std::vector<std::string> tokens;
-
-    size_t current_pos = 0;
-    size_t pos = 0;
-    while ((pos = tokenstring.find(delimiter, current_pos)) !=
-           std::string::npos) {
-      tokens.push_back(tokenstring.substr(current_pos, pos - current_pos));
-      current_pos = pos + 1;
-    }
-    tokens.push_back(tokenstring.substr(current_pos));
-    return tokens;
-  };
-
-  auto plugin_libs = split(tampl::bt::TAMPL_DEFAULT_BT_PLUGINS, ';');
-  for (const auto &p : plugin_libs) {
-    bt_factory_.registerFromPlugin(BT::SharedLibrary::getOSName(p));
-  }
-}
-
-PlannerBTEngine::PlannerBTEngine(
       const std::string &bt_xml_path,
       const std::shared_ptr<core::Domain> &domain,
       const std::shared_ptr<core::Problem> &problem)
@@ -66,12 +41,10 @@ PlannerBTEngine::PlannerBTEngine(
 PlannerBTEngine::~PlannerBTEngine() {}
 
 bool PlannerBTEngine::init() {
-  // get PDDL domain and problem
-  const auto &domain = env_manager_->get_domain();
-  const auto &problem = env_manager_->get_problem();
+  // TODO: get PDDL domain and problem
 
-  printf("[PlannerBTEngine] Using PDDL domain from %s and problem from %s\n",
-         domain->get_file_path().c_str(), problem->get_file_path().c_str());
+  // printf("[PlannerBTEngine] Using PDDL domain from %s and problem from %s\n",
+  // domain->get_file_path().c_str(), problem->get_file_path().c_str());
 
   // sanity check whether all the actions in the domain are available in the
   // environment to execute
@@ -86,8 +59,8 @@ bool PlannerBTEngine::init() {
   // }
 
   bb_ = BT::Blackboard::create();
-  bb_->set<std::string>("domain_file", domain->get_file_path());
-  bb_->set<std::string>("problem_file", problem->get_file_path());
+  // bb_->set<std::string>("domain_file", domain->get_file_path());
+  // bb_->set<std::string>("problem_file", problem->get_file_path());
 
   tree_ = bt_factory_.createTreeFromFile(bt_xml_path_, bb_);
 

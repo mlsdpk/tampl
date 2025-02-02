@@ -9,7 +9,6 @@
 #include "tampl/core/action.hpp"
 #include "tampl/core/domain.hpp"
 #include "tampl/core/problem.hpp"
-#include "tampl/environment/environment_manager.hpp"
 
 namespace tampl::bt {
 
@@ -32,12 +31,9 @@ public:
    * @brief Constructs a PlannerBTEngine with a specified behavior tree.
    *
    * @param bt_xml_path Path to the XML file defining the behavior tree.
-   * @param env_manager TODO
+   * @param domain TODO:
+   * @param problem TODO:
    */
-  PlannerBTEngine(
-      const std::string &bt_xml_path,
-      const std::shared_ptr<environment::EnvironmentManager> &env_manager);
-
   PlannerBTEngine(
       const std::string &bt_xml_path,
       const std::shared_ptr<core::Domain> &domain,
@@ -84,9 +80,6 @@ private:
 
   std::shared_ptr<core::Domain> domain_;
   std::shared_ptr<core::Problem> problem_;
-
-  /// @brief
-  std::shared_ptr<environment::EnvironmentManager> env_manager_;
 
   bool initialized_{false};
 };
