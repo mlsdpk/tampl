@@ -72,11 +72,9 @@ bool PlannerBTEngine::solve() {
   // In this case, the entire sequence is executed, because all the children
   // of the Sequence return SUCCESS.
   auto status = tree_.tickWhileRunning();
+  plan_ = tree_.rootBlackboard()->get<plan_skeleton_t>("plan");
 
-  // if (status == BT::NodeStatus::SUCCESS)
-  //   plan_ = tree_.rootBlackboard()->get<std::vector<core::Action>>("plan");
-
-  return true;
+  return (status == BT::NodeStatus::SUCCESS) ? true : false;
 }
 
 bool PlannerBTEngine::execute(const plan_skeleton_t &plan) {
@@ -95,12 +93,26 @@ bool PlannerBTEngine::execute(const plan_skeleton_t &plan) {
   //   }
   // }
 
+  TAMPL_INFO("Executing the planning solution sequentially...");
+  for (const auto& [task_action, motion_plan] : plan)
+  {
+    TAMPL_INFO("Running task action '{}'", task_action->get_id());
+    if (!domain_->execute(task_action->get_id()))
+    {
+      TAMPL_ERROR("Failed to execute task action '{}'", task_action->get_id());
+      TAMPL_ERROR("Planning failed");
+      return false;
+    }
+  }
+
+  TAMPL_INFO("Planning finished successfully");
+
   return true;
 }
 
 const PlannerBTEngine::plan_skeleton_t &PlannerBTEngine::get_plan() const {
   // get the plan skeleton from the main blackboard
-  return bb_->get<plan_skeleton_t>("plan");
+  return plan_;
 }
 
 } // namespace tampl::bt

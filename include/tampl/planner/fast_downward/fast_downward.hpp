@@ -15,7 +15,7 @@ class FastDownward : public core::Planner {
 public:
   FastDownward();
 
-  bool solve(const std::filesystem::path &domain_file, const std::filesystem::path &problem_file);
+  std::optional<std::vector<std::shared_ptr<core::Action>>> solve(const std::filesystem::path &domain_file, const std::filesystem::path &problem_file);
 
 private:
   std::string binary_path_;

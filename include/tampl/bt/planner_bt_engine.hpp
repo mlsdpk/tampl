@@ -83,6 +83,8 @@ private:
   std::shared_ptr<core::Problem> problem_;
 
   bool initialized_{false};
+
+  plan_skeleton_t plan_;
 };
 
 } // namespace tampl::bt

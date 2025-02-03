@@ -54,14 +54,26 @@ BT::NodeStatus TaskPlanner::tick() {
 
   // since we are assuming all task planners to rely on PDDL at the moment
   // we can directly call this method
-  bool solved = planner_->solve(domain_file.value(), problem_file.value());
+  auto solution = planner_->solve(domain_file.value(), problem_file.value());
 
-  // if (solved) {
-  //   const auto &plan = planner_->get_solution();
-  //   setOutput("plan", plan);
-  // }
+  if (solution)
+  {
+    // create a list of task actions as a shared task plan
+    auto shared_task_plan = std::make_shared<std::deque<std::shared_ptr<core::Action>>>();
 
-  return solved ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
+
+    TAMPL_DEBUG("Task planner found a solution plan with {} actions", (*solution).size());
+    size_t i = 0;
+    for (const auto& action : *solution) {
+      TAMPL_DEBUG("[{}] action id: {}", i, action->get_id());
+      shared_task_plan->push_back(action);
+      ++i;
+    }
+
+    setOutput("task_plan", shared_task_plan);
+  }
+
+  return solution ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
 }
 
 } // namespace tampl::bt::planner

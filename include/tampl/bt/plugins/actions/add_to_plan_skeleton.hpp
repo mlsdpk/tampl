@@ -4,6 +4,7 @@
 
 #include "tampl/core/action.hpp"
 #include "tampl/core/state.hpp"
+#include "tampl/logger.hpp"
 
 namespace tampl::bt {
 

@@ -21,6 +21,8 @@ BT::NodeStatus AddToPlanSkeleton::tick() {
                            task_action.error());
   }
 
+  TAMPL_DEBUG("AddToPlanSkeleton::tick() received 'task_action' with id '{}'", task_action.value()->get_id());
+
   BT::Expected<motion_plan_t> motion_plan =
       getInput<motion_plan_t>("motion_plan");
   // Check if expected is valid. If not, throw its error
@@ -28,6 +30,8 @@ BT::NodeStatus AddToPlanSkeleton::tick() {
     throw BT::RuntimeError("missing required input [message]: ",
                            motion_plan.error());
   }
+
+  TAMPL_DEBUG("AddToPlanSkeleton::tick() received 'motion_plan' with {} states", motion_plan.value().size());
 
   if (auto any_ptr = getLockedPortContent("plan")) {
     // inside this scope (as long as any_ptr exists) the access to
@@ -37,10 +41,12 @@ BT::NodeStatus AddToPlanSkeleton::tick() {
     if (any_ptr->empty()) {
       // The entry hasn't been initialized by any other node, yet.
       // Let's initialize it ourselves
+      TAMPL_DEBUG("Initializing plan skeleton for the first time...");
       plan_skeleton_t plan = {std::make_pair(task_action.value(), motion_plan.value())};
       any_ptr.assign(plan);
     } else if (auto *vect_ptr = any_ptr->castPtr<plan_skeleton_t>()) {
       // NOTE: vect_ptr would be nullptr, if we try to cast it to the wrong type
+      TAMPL_DEBUG("Adding new task and motion plan into previous plan skeleton");
       vect_ptr->push_back(std::make_pair(task_action.value(), motion_plan.value()));
     }
     return BT::NodeStatus::SUCCESS;

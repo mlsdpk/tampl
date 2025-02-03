@@ -35,6 +35,8 @@ public:
    */
   [[nodiscard]] std::filesystem::path get_file_path() const { return pddl_file_; }
 
+  bool execute(const std::string& id);
+
 private:
   std::filesystem::path pddl_file_;  ///< Path to the PDDL domain file.
   std::unordered_map<std::string, std::function<void()>> action_callbacks_; ///< Map of action IDs to callbacks.

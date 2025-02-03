@@ -48,7 +48,7 @@ target_link_libraries(
     yaml-cpp
     fmt::fmt)
 
-target_compile_definitions(tampl PRIVATE TAMPL_LOG_LEVEL=tampl::LogLevel::DEBUG)
+target_compile_definitions(tampl PUBLIC TAMPL_LOG_LEVEL=tampl::LogLevel::DEBUG)
 
 if(TAMPL_BUILD_PYBINDINGS)
   target_include_directories(

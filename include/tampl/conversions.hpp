@@ -5,6 +5,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <filesystem>
 
 #include <iostream> // to remove
 
@@ -18,8 +20,36 @@
 // tampl related
 #include "tampl/core/action.hpp"
 #include "tampl/core/state.hpp"
+#include "tampl/logger.hpp"
 
 namespace tampl::conversions {
+
+inline bool from_fd_sas_plan(
+  const std::filesystem::path &filepath, std::vector<std::shared_ptr<tampl::core::Action>>& plan)
+{
+  std::ifstream file(filepath);
+  std::string line;
+
+  if (!file) {
+    TAMPL_ERROR("Error opening file: {}", filepath.string());
+    return false;
+  }
+
+  std::regex action_regex(R"(\((\S+))");
+
+  while (std::getline(file, line)) {
+    if (line.empty() || line[0] == ';') {
+      continue;
+    }
+
+    std::smatch match;
+    if (std::regex_search(line, match, action_regex)) {
+      plan.push_back(std::make_shared<tampl::core::Action>(match[1]));
+    }
+  }
+
+  return true;
+}
 
 inline void from_ff_result(const std::string &from,
                            std::vector<tampl::core::Action> &to) {
