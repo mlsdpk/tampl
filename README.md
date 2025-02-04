@@ -15,3 +15,7 @@ $ mkdir build && cd build
 $ cmake ..
 $ make -j$(nproc)
 ```
+
+## Running Examples
+
+All the examples demonstrating TAMPL's capabilities can be found in the [examples](examples/).
