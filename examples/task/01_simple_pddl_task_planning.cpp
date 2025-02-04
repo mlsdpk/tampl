@@ -1,42 +1,40 @@
-#include "tampl/tampl.hpp"
+/*
+ * This example demonstrates a simple task planning setup using PDDL.
+ * It showcases how to load a domain and problem, and use the Fast Downward planner
+ * to generate a solution plan.
+ */
 
-#include <filesystem>
-#include <iostream>
 #include <memory>
-#include <string>
+
+#include "tampl/tampl.hpp"
 
 int main(int argc, char const *argv[]) {
 
-  // create domain and problem instances from pddl files
-  auto domain = std::make_shared<tampl::core::Domain>(
-     "../../examples/task/pddl/lets_eat/domain.pddl");
-  auto problem = std::make_shared<tampl::core::Problem>(
-    "../../examples/task/pddl/lets_eat/problem.pddl");
+  // Step 1: Create domain and problem instances from PDDL files
+  auto domain = std::make_shared<tampl::core::Domain>("data/pddl/task/lets_eat/domain.pddl");
+  auto problem = std::make_shared<tampl::core::Problem>("data/pddl/task/lets_eat/problem.pddl");
 
-  // we need to make sure each action in the domain has associated executors
-  domain->register_action("pick-up",[](){ std::cout << "Executing action 'pick-up'\n"; });
-  domain->register_action("drop", [](){ std::cout << "Executing action 'drop'\n"; });
-  domain->register_action("move", [](){ std::cout << "Executing action 'move'\n"; });
+  // Step 2: Create a Fast Downward task planner
+  // This planner will attempt to generate a valid plan based on the given domain and problem.
+  auto task_planner = std::make_shared<tampl::planner::FastDownward>();
 
-  // create planner BT engine
-  auto bt_xml_path = tampl::bt::default_behavior_trees_dir() / "task/simple_task_planner.xml";
-  auto engine = std::make_shared<tampl::bt::PlannerBTEngine>(bt_xml_path.string(), domain, problem);
+  // Step 3: Solve the task planning problem
+  // If a solution is found, it will contain a sequence of actions to achieve the goal.
+  auto solution = task_planner->solve(domain->get_file_path(), problem->get_file_path());
 
-  // run the planner (this will only find a solution plan 
-  // and do not execute each registered action callbacks)
-  bool solved = engine->solve();
-
-  if (solved)
+  // if solution is found, output it on the console
+  if (solution)
   {
-    // get the solution
-    auto plan = engine->get_plan();
-
-    // execute the solution plan
-    engine->execute(plan);
+    TAMPL_INFO("Task planner found a solution plan with {} actions", (*solution).size());
+    for (size_t i = 0; i < (*solution).size(); ++i)
+    {
+      TAMPL_INFO("[{}] action id: {}", i, (*solution)[i]->get_id());
+    }
   }
   else
   {
-    std::cout << "Solution not found\n";
+    // if no solution is found, inform the user.
+    TAMPL_ERROR("Solution not found");
   }
 
   return 0;
