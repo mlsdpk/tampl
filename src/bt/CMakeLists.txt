@@ -13,19 +13,6 @@ function(tampl_add_bt_plugin plugin_name src_files)
   target_link_libraries(${plugin_name} tampl behaviortree_cpp)
   add_dependencies(${plugin_name} tampl)
 
-  set_target_properties(${plugin_name} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
-
-  if(UNIX AND NOT APPLE)
-    set_target_properties(${plugin_name} PROPERTIES INSTALL_RPATH
-                                                    "$ORIGIN/../lib")
-  elseif(APPLE)
-    set_target_properties(${plugin_name} PROPERTIES INSTALL_RPATH
-                                                    "@loader_path/../lib")
-  endif()
-
-  set_target_properties(${plugin_name} PROPERTIES INSTALL_RPATH_USE_LINK_PATH
-                                                  TRUE)
-
   install(
     TARGETS ${plugin_name}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

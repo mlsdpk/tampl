@@ -1,3 +1,6 @@
+# Where to put all the LIBRARY target files when built.
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
 # RPATH stuff see https://cmake.org/Wiki/CMake_RPATH_handling
 if(APPLE)
   set(CMAKE_MACOSX_RPATH ON)
@@ -6,18 +9,23 @@ else()
   set(_rpath_portable_origin $ORIGIN)
 endif()
 
+# rpath options for build
+
 # Use separate rpaths during build and install phases
 set(CMAKE_SKIP_BUILD_RPATH TRUE)
 # Don't use the install-rpath during the build phase
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH "${_rpath_portable_origin}")
+
+set(CMAKE_BUILD_RPATH ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+
+# rpath options for install
 
 # add the automatically determined parts of the RPATH which point to directories
 # outside the build tree to the install RPATH
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_INSTALL_RPATH "${_rpath_portable_origin}")
 
-# Where to put all the LIBRARY target files when built.
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+################################################################################
 
 # create tampl as an empty lib for now
 add_library(${PROJECT_NAME} SHARED)
@@ -89,4 +97,5 @@ packageProject(
   INCLUDE_DESTINATION include/${PROJECT_NAME}-${TAMPL_VERSION}
   VERSION_HEADER "${VERSION_HEADER_LOCATION}"
   COMPATIBILITY SameMinorVersion
-  DEPENDENCIES "ompl 1.6.0;behaviortree_cpp 4.6.2")
+  DEPENDENCIES "ompl 1.6.0;behaviortree_cpp 4.6.2"
+  RUNTIME_DESTINATION .) # this will install tampl under $(CMAKE_INSTALL_LIBDIR)/
