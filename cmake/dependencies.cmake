@@ -5,7 +5,7 @@ CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.13.0")
 CPMAddPackage(
   NAME ompl
   GITHUB_REPOSITORY ompl/ompl
-  GIT_TAG prerelease
+  GIT_TAG 2f22d2c964379d872f32459ec6573d740a342c7e
   OPTIONS
       "OMPL_BUILD_TESTS OFF"
       "OMPL_BUILD_DEMOS OFF"
