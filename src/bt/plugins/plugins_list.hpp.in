@@ -4,4 +4,6 @@
 namespace tampl::bt {
 // inline to ensure a single definition across the program
 inline const char *TAMPL_DEFAULT_BT_PLUGINS = "@plugin_libs@";
+inline const char *TAMPL_DEFAULT_BT_PLUGINS_BUILD_DIR = "@plugin_libs_build_dir@";
+inline const char *TAMPL_DEFAULT_BT_PLUGINS_INSTALL_DIR = "@plugin_libs_install_dir@";
 } // namespace tampl::bt

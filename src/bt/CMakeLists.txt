@@ -1,6 +1,7 @@
 # configure default BT plugins
-
 set(plugin_libs "")
+set(plugin_libs_build_dir "${CMAKE_BINARY_DIR}/lib")
+set(plugin_libs_install_dir "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
 function(tampl_add_bt_plugin plugin_name src_files)
   add_library(${plugin_name} SHARED ${src_files})

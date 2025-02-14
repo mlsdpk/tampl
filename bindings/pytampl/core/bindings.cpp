@@ -1,5 +1,7 @@
 #include "pytampl/core/action.hpp"
 #include "pytampl/typedefs.hpp"
+#include "tampl/core/domain.hpp"
+#include "tampl/core/problem.hpp"
 #include "tampl/core/state.hpp"
 
 namespace tampl::pytampl {
@@ -105,6 +107,20 @@ PYBIND11_MODULE(core, m) {
       .def("on_shutdown", &base_action_t::on_shutdown);
 
   //////////////////////////////////////////////////////////
+
+  // domain and problem related
+
+  using base_domain_t = tampl::core::Domain;
+  py::class_<base_domain_t, std::shared_ptr<base_domain_t>>(m, "Domain")
+    .def(py::init<const std::string &>(), py::arg("file"))
+    .def("register_action", &base_domain_t::register_action)
+    .def("get_file_path", &base_domain_t::get_file_path)
+    .def("execute", &base_domain_t::execute);
+
+  using base_problem_t = tampl::core::Problem;
+  py::class_<base_problem_t, std::shared_ptr<base_problem_t>>(m, "Problem")
+    .def(py::init<const std::string &>(), py::arg("file"))
+    .def("get_file_path", &base_problem_t::get_file_path);
 }
 
 } // namespace tampl::pytampl

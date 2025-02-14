@@ -10,11 +10,9 @@ function(tampl_add_python_module module_name src_files)
   set_target_properties(${module_name} PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
 
   if(UNIX AND NOT APPLE)
-    set_target_properties(${module_name} PROPERTIES INSTALL_RPATH
-                                                    "$ORIGIN/../lib")
+    set_target_properties(${module_name} PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
   elseif(APPLE)
-    set_target_properties(${module_name} PROPERTIES INSTALL_RPATH
-                                                    "@loader_path/../lib")
+    set_target_properties(${module_name} PROPERTIES INSTALL_RPATH "@loader_path/../lib")
   endif()
 
   set_target_properties(${module_name} PROPERTIES INSTALL_RPATH_USE_LINK_PATH

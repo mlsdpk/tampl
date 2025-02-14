@@ -78,3 +78,9 @@ CPMAddPackage(
   GIT_TAG 11.1.3
   GITHUB_REPOSITORY fmtlib/fmt
 )
+
+if(TAMPL_BUILD_PYBINDINGS)
+    find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
+    set(PYBIND11_FINDPYTHON ON)
+    find_package(pybind11 CONFIG REQUIRED)
+endif()

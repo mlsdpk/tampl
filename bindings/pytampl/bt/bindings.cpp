@@ -1,6 +1,6 @@
 #include "pytampl/typedefs.hpp"
+#include "tampl/bt/behavior_trees/config.hpp"
 #include "tampl/bt/planner_bt_engine.hpp"
-#include "tampl/environment/environment_manager.hpp"
 
 namespace tampl::pytampl {
 
@@ -9,12 +9,17 @@ PYBIND11_MODULE(bt, m) {
 
   py::class_<class_t>(m, "PlannerBTEngine")
       .def(py::init<const std::string &,
-                    const std::shared_ptr<environment::EnvironmentManager> &>(),
-           py::arg("bt_xml_path"), py::arg("env_manager"))
+                    const std::shared_ptr<core::Domain> &,
+                    const std::shared_ptr<core::Problem>>(),
+           py::arg("bt_xml_path"), py::arg("domain"), py::arg("problem"))
       .def("init", &class_t::init)
       .def("solve", &class_t::solve)
       .def("execute", &class_t::execute)
       .def("get_plan", &class_t::get_plan);
+
+  ////////////////////////////////////////////////////////////////////////
+
+  m.def("default_behavior_trees_dir", &tampl::bt::default_behavior_trees_dir);
 }
 
 } // namespace tampl::pytampl

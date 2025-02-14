@@ -1,45 +1,30 @@
+'''
+  This example demonstrates a simple task planning setup using PDDL.
+  It showcases how to load a domain and problem, and use the Fast Downward planner
+  to generate a solution plan.
+'''
+
 import os
 
-from typing import List
-
 from pytampl.bt import PlannerBTEngine
-from pytampl.core import Action, Domain, Problem
+from pytampl.core import Domain, Problem
+from pytampl.planner import FastDownward
 
-# create domain and problem instances from pddl files
-domain = Domain(file=os.path.join(os.path.dirname(__file__), "pddl/lets_eat/domain.pddl")
-problem = Problem(file=os.path.join(os.path.dirname(__file__), "pddl/lets_eat/problem.pddl")
+# Step 1: Create domain and problem instances from PDDL files
+domain = Domain(file=os.path.join(os.path.dirname(__file__), "../data/pddl/task/lets_eat/domain.pddl"))
+problem = Problem(file=os.path.join(os.path.dirname(__file__), "../data/pddl/task/lets_eat/problem.pddl"))
 
-# we need to make sure each action in the domain has associated executors
-def action_pick_up_callback():
-    print("Executing action 'pick-up')
+# Step 2: Create a Fast Downward task planner
+# This planner will attempt to generate a valid plan based on the given domain and problem.
+task_planner = FastDownward()
 
+# Step 3: Solve the task planning problem
+# If a solution is found, it will contain a sequence of actions to achieve the goal.
+solution = task_planner.solve(domain.get_file_path(), problem.get_file_path());
 
-def action_drop_callback():
-    print("Executing action 'drop')
-
-
-def action_move_callback():
-    print("Executing action 'move')
-
-
-# each action id must be the same as the ones described in the domain file
-domain.register_action('pick-up', action_pick_up_callback)
-domain.register_action('drop', action_drop_callback)
-domain.register_action('move', action_move_callback)
-
-# create planner BT engine
-bt_xml_path = os.path.join(os.path.dirname(__file__), "../../behavior_trees/task/simple_task_planner.xml")
-engine = PlannerBTEngine(bt_xml_path=bt_xml_path, domain=domain, problem=problem)
-
-# run the planner (this will only find a solution plan 
-# and do not execute each registered action callbacks)
-solved = engine.solve()
-
-if solved:
-    # get the solution
-    plan: List[Action] = engine.get_plan()
-
-    # execute the solution plan
-    engine.execute(plan)
+if solution:
+    print(f"Task planner found a solution plan with {len(solution)} actions")
+    for i in range(len(solution)):
+        print(f"[{i}] action id: {solution[i].id}")
 else:
-    print("Solution not found!")
+    print("Solution not found")

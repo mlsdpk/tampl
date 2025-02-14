@@ -24,8 +24,28 @@ PlannerBTEngine::PlannerBTEngine(
   };
 
   auto plugin_libs = split(tampl::bt::TAMPL_DEFAULT_BT_PLUGINS, ';');
+
   for (const auto &p : plugin_libs) {
-    bt_factory_.registerFromPlugin(BT::SharedLibrary::getOSName(p));
+
+    // we'll find default plugins from install directory first
+    std::filesystem::path abs_path_to_plugin =
+      std::filesystem::path(tampl::bt::TAMPL_DEFAULT_BT_PLUGINS_INSTALL_DIR) / BT::SharedLibrary::getOSName(p);
+    if (std::filesystem::exists(abs_path_to_plugin))
+    {
+      bt_factory_.registerFromPlugin(abs_path_to_plugin.string());
+      continue;
+    }
+
+    // fallback to build directory
+    abs_path_to_plugin =
+      std::filesystem::path(tampl::bt::TAMPL_DEFAULT_BT_PLUGINS_BUILD_DIR) / BT::SharedLibrary::getOSName(p);
+    if (std::filesystem::exists(abs_path_to_plugin))
+    {
+      bt_factory_.registerFromPlugin(abs_path_to_plugin.string());
+    } else {
+      TAMPL_WARN("BT plugin {} not found in either BUILD or INSTALL directories.", p);
+    }
+
   }
 }
 
